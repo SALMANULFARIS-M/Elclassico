@@ -1,8 +1,9 @@
+global.TextEncoder = require("util").TextEncoder;
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 require("dotenv").config();
 mongoose
-  .connect("mongodb+srv://fsalmanul13:wGIAPBvl54twNmCu@cluster0.r6p4dy9.mongodb.net/ElClassico?retryWrites=true&w=majority")
+  .connect(process.env.MONGODB_IP)
   .then(() => {
     console.log("database connected");
   })
