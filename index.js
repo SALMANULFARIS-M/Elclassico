@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 require("dotenv").config();
 mongoose
-  .connect(process.env.MONGODB_IP)
+  .connect("mongodb+srv://fsalmanul13:wGIAPBvl54twNmCu@cluster0.r6p4dy9.mongodb.net/ElClassico?retryWrites=true&w=majority")
   .then(() => {
     console.log("database connected");
   })
