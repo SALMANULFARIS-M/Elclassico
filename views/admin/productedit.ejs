@@ -1,0 +1,173 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+    <div class="left">
+        <ul class="breadcrumb">
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/products">Products</a>
+            </li>
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/editproduct">Edit product</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- table -->
+    <form action="/admin/editproduct" method="post" enctype="multipart/form-data" id="myForm">
+        <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add New Product</h4>
+                    <%if(typeof message !=='undefined' ){ %>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+                            <div class="mx-2">
+                                <%= message%>
+                            </div>
+                        </div>
+                        <% } %>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control text-light " placeholder="Product Name"
+                                        value="<%=product.name%>" name="product" aria-label="Username"
+                                        aria-describedby="basic-addon1">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light"
+                                            aria-label="Amount (to the nearest dollar)" placeholder="Gross Price"
+                                            name="gp" value="<%=product.gross_price%>" id="gross">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <input type="text" class="form-control text-light"
+                                            aria-label="Amount (to the nearest dollar)" placeholder="offer Price"
+                                            name="op" value="<%=product.offer_price%>" id="offer">
+                                        <span class="input-group-text">0.00</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light" placeholder="Available sizes"
+                                            name="size" value="<%=product.size%>" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light" placeholder="Brand Name"
+                                            name="brand" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2" value="<%=product.brand%>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light" placeholder="Stock"
+                                            name="stock" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2" value="<%=product.stocks%>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="form-group mb-3">
+                                            <label class="text-light" for="category">Category</label>
+                                            <select class="custom-select tm-select-accounts" id="category"
+                                                name="category" required>
+                                                <option value="<%=product.category%>">
+                                                    <%=category_name.name%>
+                                                </option>
+
+                                                <% for(category of categories) { %>
+                                                    <option value="<%= category.id %>">
+                                                        <%= category.name %>
+                                                    </option>
+                                                    <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group my-4">
+                                <div class="input-group">
+                                    <div class="input-group-append mb-3">
+                                        <div class="custom-file">
+                                            <label class="form-label text-white " for="customFile">Choose three
+                                                images for Product</label>
+                                            <input type="file" class="form-control ps-3" name="image1" id="customFile"
+                                                onchange="viewFirst(event)"/>
+                                        </div>
+                                        <div class="ms-4 custom-file">
+                                            <label class="form-label text-white " for="customFile">Choose three
+                                                images for Product</label>
+                                            <input type="file" class="form-control ps-3" name="image2"
+                                                onchange="viewSecond(event)" id="customFile" />
+                                        </div>
+                                        <div class="ms-4 custom-file">
+                                            <label class="form-label text-white " for="customFile">Choose three
+                                                images for Product</label>
+                                            <input type="file" class="form-control ps-3" name="image3"
+                                                onchange="viewThird(event)" id="customFile" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group my-4">
+                                <div class="input-group ">
+                                    <div class="input-group-append mb-3 d-flex justify-content-between">
+                                        <img src="/productimg/<%=product.image[0]%>" class="mx-4 rounded"
+                                            alt="alt preview-icon" id="first" width="250" height="250">
+                                        <img src="/productimg/<%=product.image[1]%>" class="mx-5 rounded"
+                                            alt="alt preview-icon" id="second" width="250" height="250">
+                                        <img src="/productimg/<%=product.image[2]%>" class="mx-5 rounded"
+                                            alt="alt preview-icon" id="third" width="270" height="250">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea class="text-light" name="Description" id="" cols="30" rows="10"
+                                        placeholder="Description"
+                                        style="width: 50em; height: 10em; background-color: #2A3038; border-radius: 0.2em; border-color: aliceblue;"> <%=product.description%></textarea>
+                                </div>
+
+                                <input type="hidden" name="id" value="<%=product._id %>">
+                                <div class="d-flex  justify-content-end w-50 mt-5">
+                                    <button type="submit" class="btn btn-success">submit</button>
+                                </div>
+                            </div>
+    </form>
+    </div>
+    </div>
+
+    <script>
+        function viewFirst(event) {
+            document.getElementById('first').src = URL.createObjectURL(event.target.files[0])
+        }
+        function viewSecond(event) {
+            document.getElementById('second').src = URL.createObjectURL(event.target.files[0])
+        }
+        function viewThird(event) {
+            document.getElementById('third').src = URL.createObjectURL(event.target.files[0])
+        }
+
+    </script>
+    <%- include('../admin/footer.ejs')%>

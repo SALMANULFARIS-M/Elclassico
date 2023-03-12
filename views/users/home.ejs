@@ -1,0 +1,254 @@
+<%- include('../layouts/homehead.ejs') %>
+
+
+	<%- include('../layouts/homenav.ejs') %>
+
+		<!-- start banner Area -->
+		<section class="banner-area">
+			<div class="container">
+				<div class="row fullscreen align-items-center justify-content-start">
+					<div class="col-lg-12">
+						<div class="active-banner-slider owl-carousel">
+							<!-- single-slide -->
+							<% for(let i=0;i<banner.length;i++){ %>
+								<div class="row single-slide align-items-center d-flex">
+									<div class="col-lg-5 col-md-6">
+										<div class="banner-content">
+											<h1>
+												<%= banner[i].title%>
+											</h1>
+											<p>
+												<%= banner[i].description%>
+											</p>
+											<div class="add-bag d-flex align-items-center">
+												<a class="add-btn" href="/shop"><i
+														class="bi bi-bag-fill text-light fa-2x"></i></a>
+												<span class="add-text text-uppercase">Shop</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-7">
+										<div class="banner-img">
+											<img class="img-fluid" src="/productimg/<%=banner[i].image%>" alt="">
+										</div>
+									</div>
+								</div>
+
+								<% } %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End banner Area -->
+
+
+		<!-- start features Area -->
+		<section class="features-area section_gap">
+			<div class="container">
+				<div class="row features-inner">
+					<!-- single features -->
+					<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="single-features">
+							<div class="f-icon">
+								<i class="fa fa-shipping-fast text-warning fa-3x"></i>
+							</div>
+							<h6>Free Delivery</h6>
+							<p>Free Shipping on all order</p>
+						</div>
+					</div>
+					<!-- single features -->
+					<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="single-features">
+							<div class="f-icon">
+								<i class="fas fa-exchange-alt text-warning fa-3x"></i>
+							</div>
+							<h6>Return Policy</h6>
+							<p>Free Shipping on all order</p>
+						</div>
+					</div>
+					<!-- single features -->
+					<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="single-features">
+							<div class="f-icon">
+								<i class="fa fa-phone-volume text-warning fa-3x"></i>
+							</div>
+							<h6>24/7 Support</h6>
+							<p>Free Shipping on all order</p>
+						</div>
+					</div>
+					<!-- single features -->
+					<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="single-features">
+							<div class="f-icon">
+								<i class="fa fa-check text-warning fa-3x"></i>
+							</div>
+							<h6>Quality Products</h6>
+							<p>Free Shipping on all order</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end features Area -->
+
+		<!-- Start category Area -->
+
+		<section class="category-area">
+			<div class="container">
+				<h1 class="text-center my-4 fw-bold border-bottom">CATEGORIES</h1>
+
+
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-12">
+
+						<div class="row">
+
+							<% for(let i=0;i<categories.length;i++){ %>
+								<div class="col-lg-3 col-md-3 my-5"
+									style=" border-right: 0.5px solid #e7e4e4;border-left: 0.5px solid #e7e4e4;">
+									<div class="single-deal">
+										<div class="overlay"></div>
+										<img class="img-fluid w-100" src="/productimg/<%=categories[i].image%>" alt="">
+										<a href="" class="img-pop-up" target="_blank">
+											<div class="deal-details">
+
+												<h6 class="deal-title">
+													<%= categories[i].name%>
+												</h6>
+											</div>
+										</a>
+									</div>
+								</div>
+								<% } %>
+
+						</div>
+					</div>
+		</section>
+		<!-- End category Area -->
+
+		<!-- start product Area -->
+
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Latest Products</h1>
+						<p>This are our latest product you never have been seen before.
+							<br> Choose a best one for you.Chase your goal with <br><strong class="text-black">Elclassico</strong> </p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!-- single product -->
+				<% for(let i=0;i<6;i++){ %>
+					<div class="col-lg-4 col-md-6 my-5">
+						<div class="single-product" style="position: relative;">
+							<% if (product[i].stocks==0) { %>
+								<div class="out-of-stock" style="position: absolute;">
+									<h3><span class="badge" style="background-color: red;
+									color: white;
+									padding: 4px 8px;
+									text-align: center;
+									border-radius: 5px;">Out of stock</span></h3>
+								</div>
+								<% } %>
+									<img class="img-fluid" src="/productimg/<%=product[i].image[1]%>" alt=""
+										style="height: 20em;">
+									<div class="product-details">
+										<h6>
+											<%=product[i].name%>
+										</h6>
+										<div class="price">
+											<h6><i class="bi bi-currency-rupee"></i>
+												<%=product[i].offer_price%>.00
+											</h6>
+											<h6 class="l-through text-danger"><i class="bi bi-currency-rupee"></i>
+												<%=product[i].gross_price%>.00
+											</h6>
+										</div>
+										<div class="prd-bottom">
+
+											<% if(typeof userData==="undefined" ){ %>
+												<a href="/signin" class="social-info">
+													<span class=""><i
+															class="bi bi-cart-plus-fill text-black"></i></span>
+													<p class="hover-text">add to bag</p>
+												</a>
+
+												<a href="/signin" class="social-info">
+													<span><i class="bi bi-heart-fill"></i></span>
+													<p class="hover-text">Wishlist</p>
+												</a>
+												<% } else {%>
+													<% if(product[i].stocks !=0){%>
+														<a href="" onclick="addCart('<%=product[i]._id%>')"
+															class="social-info">
+															<span class=""><i
+																	class="bi bi-cart-plus-fill text-black"></i></span>
+															<p class="hover-text">add to bag</p>
+														</a>
+														<%}%>
+															<%if(wishlist.includes(product[i]._id)){ %>
+																<a onclick="wishlist('<%=product[i]._id%>')"
+																	class="social-info">
+																	<span><i class="bi bi-heart-fill text-danger"
+																			id="wish-<%=product[i]._id%>"></i></span>
+																	<p class="hover-text">Wishlist</p>
+																</a>
+																<% } else {%>
+																	<a onclick="wishlist('<%=product[i]._id%>')"
+																		class="social-info">
+																		<span><i class="bi bi-heart-fill"
+																				id="wish-<%=product[i]._id%>"></i></span>
+																		<p class="hover-text">Wishlist</p>
+																	</a>
+																	<%}%>
+																		<%}%>
+																			<a href="/viewproduct?id=<%=product[i]._id%>"
+																				class="social-info">
+																				<span><i
+																						class="fa-solid fa-circle-info text-black"></i></span>
+																				<p class="hover-text">view more</p>
+																			</a>
+										</div>
+									</div>
+						</div>
+					</div>
+					<% } %>
+
+			</div>
+		</div>
+
+		<!-- Start brand Area -->
+		<section class="brand-area section_gap">
+			<div class="container">
+				<div class="row">
+					<a class="col single-img" href="#">
+						<img class="img-fluid d-block mx-auto" src="img/brand/1.png" alt="">
+					</a>
+					<a class="col single-img" href="#">
+						<img class="img-fluid d-block mx-auto" src="img/brand/2.png" alt="">
+					</a>
+					<a class="col single-img" href="#">
+						<img class="img-fluid d-block mx-auto" src="img/brand/3.png" alt="">
+					</a>
+					<a class="col single-img" href="#">
+						<img class="img-fluid d-block mx-auto" src="img/brand/4.png" alt="">
+					</a>
+					<a class="col single-img" href="#">
+						<img class="img-fluid d-block mx-auto" src="img/brand/5.png" alt="">
+					</a>
+				</div>
+			</div>
+		</section>
+		<!-- End brand Area -->
+
+
+		<script>
+			const page = document.getElementById('home-page');
+			page.classList.remove('text-light');
+			page.classList.add('text-warning');
+		</script>
+
+		<%- include('../layouts/homefoot.ejs') %>

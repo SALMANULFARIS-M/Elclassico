@@ -1,0 +1,201 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/products">PRODUCTS</a>
+            </li>
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/addproducts">Add Products</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- table -->
+
+    <form action="/admin/addproducts" method="post" enctype="multipart/form-data" id="Product">
+        <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add New Product</h4>
+                    <%if(typeof message !=='undefined' ){ %>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+                            <div class="mx-2">
+                                <%= message%>
+                            </div>
+                        </div>
+                        <% } %>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">1 : </h4>
+                                    <input type="text" class="form-control text-light " placeholder="Product Name"
+                                        name="product" aria-label="Username" aria-describedby="basic-addon1" required>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">2 : </h4>
+                                    <div class="input-group-append">
+                                        <input type="number" class="form-control text-light" onkeyup="numberValidate()"
+                                            aria-label="Amount (to the nearest dollar)" placeholder="Gross Price"
+                                            id="gross" name="gp" required>
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">3 : </h4>
+                                    <div class="input-group-prepend">
+                                        <input type="number" class="form-control text-light" onkeyup="numberValidate()"
+                                            aria-label="Amount (to the nearest dollar)" placeholder="offer Price"
+                                            id="offer" name="op" required>
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="m-4">4 : </h4>
+                                    <div class="input-group-append mb-3">
+                                        <div class="custom-file">
+                                            <label class="form-label text-white " for="customFile">Choose three images
+                                                for Product</label>
+                                            <input type="file" class="form-control ps-3" name="image" id="customFile"
+                                                multiple required accept=".webp,.jpg, .jpeg, .png"
+                                                data-parsley-trigger="change" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">5 : </h4>
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light" placeholder="Available sizes"
+                                            name="size" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">6 : </h4>
+                                    <div class="input-group-append">
+                                        <input type="text" class="form-control text-light" placeholder="Brand Name"
+                                            name="brand" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">7 : </h4>
+                                    <div class="input-group-append">
+                                        <input type="number" class="form-control text-light" placeholder="Stock"
+                                            onkeyup="numberValidate()" name="stock" aria-label="Recipient's username"
+                                            aria-describedby="basic-addon2" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="m-4">8 : </h4>
+                                    <div class="input-group-prepend">
+                                        <div class="form-group mb-3">
+                                            <label class="text-light" for="category">Category</label>
+                                            <select class="custom-select tm-select-accounts" id="category"
+                                                name="category" required>
+                                                <option value="">Select Category</option>
+                                                <% for(category of categories) { %>
+                                                    <option value="<%= category._id %>">
+                                                        <%= category.name %>
+                                                    </option>
+                                                    <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h4 class="mt-2 mx-4">9 : </h4>
+
+                                    <textarea class="text-light" name="Description" id="" cols="30" rows="10"
+                                        placeholder="Description"
+                                        style="width: 50em; height: 10em; background-color: #2A3038; border-radius: 0.2em; border-color: aliceblue;"></textarea>
+                                </div>
+
+
+                                <div class="d-flex  justify-content-end w-50 mt-5"><button type="submit"
+                                        class="btn btn-success">submit</button></div>
+
+                            </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    </div>
+    </div>
+    </div>
+
+    <script>
+
+
+
+        const input = document.querySelector('input[type="file"]');
+
+        input.addEventListener('change', () => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            const file = input.files[0];
+            const length = input.files.length;
+            if (length > 3) { // check if less than 3 images
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Minimum 3 images allowed"
+                });
+                input.value = ''; // set the input value to an empty string to clear the selected file(s)
+                return; // return to stop executing the rest of the code
+            }
+            // Check if the file is an acceptable image type
+            if (!file.type.includes('image/')) {
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Invalid file type. Please select an image file."
+                })
+                input.value = ''; // Clear the file input to allow the user to select a new file
+            }
+
+            // Check if the file size is too large
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size must be less than 10 MB.');
+                input.value = '';
+            }
+
+        });
+
+    </script>
+
+    <%- include('../admin/footer.ejs')%>

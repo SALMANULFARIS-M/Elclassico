@@ -1,0 +1,169 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/products">PRODUCTS</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Table -->
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Products</h4>
+                <div class="d-flex mb-2" style="float: right;">
+                    <a class="btn text-white" style="background-color: #ff4500;height: 2em;" href="/admin/addproducts"
+                        role="button">
+                        Add Products
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>category</th>
+                                <th>Edit/Delete</th>
+                                <th>view details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(products.length>0){%>
+                                <%for(let i =0;i<products.length;i++){%>
+                                <tr>
+                                    <td class="text-light">
+                                        <%=[i+1] %>
+                                    </td>
+                                    <td>
+                                        <img src="/productimg/<%=products[i].image[0]%>" alt="Product image"
+                                            style="border-radius: 0.2em;">
+                                    </td>
+                                    <td class="text-light">
+                                        <%= products[i].name %>
+                                    </td>
+                                    <td class="text-danger">
+                                        <i class="bi bi-currency-rupee me-1"></i>
+                                        <%= products[i].offer_price %>
+                                    </td>
+                                    <td class="text-light">
+                                        <%= products[i].stocks %>
+                                    </td>
+                                    <td class="text-light">
+                                        <%= products[i].category.name %>
+                                    </td>
+                                    <td class="d-flex ">
+                                        <a href="/admin/editproduct?id=<%= products[i]._id %>"
+                                            class="btn btn-outline-primary btn-icon-text mx-3"><i
+                                                class="mdi mdi-file-check btn-icon-prepend"></i>Edit</a>
+
+                                        <form action="/admin/deleteproduct?id=<%= products[i]._id %>" id="delete-<%= products[i]._id %>"
+                                            method="post">
+                                            <button type="submit" class="btn btn-inverse-danger"
+                                                onclick="formSubmit('<%= products[i]._id %>')"><i class="mdi  mdi-delete-sweep"></i></button>
+
+                                        </form>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/productinfo?id=<%= products[i]._id %>"
+                                            class="btn btn-outline-info"><i class="fa fa-user-secret"
+                                                aria-hidden="true"></i>View</a>
+                                    </td>
+                                </tr>
+                                <% } }  else{ %>
+                                    <tr>
+                                        <td colspan="5">Products Not Found</td>
+                                    </tr>
+                                    <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+
+
+    <style>
+        #myTable {
+            border-collapse: collapse;
+            /* Collapse borders */
+            width: 100%;
+            /* Full-width */
+            border: 1px solid #ddd;
+            /* Add a grey border */
+            font-size: 18px;
+            /* Increase font-size */
+        }
+
+        #myTable th,
+        #myTable td {
+            text-align: left;
+            /* Left-align text */
+            padding: 12px;
+            /* Add padding */
+        }
+
+        #myTable tr {
+            /* Add a bottom border to all table rows */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sweet-alert {
+            background: transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        .sweet-alert button.cancel {
+            color: black;
+        }
+
+        .sweet-alert h2 {
+            color: antiquewhite;
+        }
+
+        .sweet-alert p {
+            color: antiquewhite;
+        }
+    </style>
+
+
+    <script>
+        function formSubmit(id) {
+            event.preventDefault(); // prevent form submit
+            let form = event.target.form; // storing the form
+            swal({
+                title: "Are you sure?",
+                text: "But you will still be able to retrieve this file.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel please!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        let form = document.getElementById(`delete-${id}`)
+                        form.submit();          // submitting the form when user press yes
+                    } else {
+                        swal("Cancelled", "Your file is safe :)", "error");
+                    }
+                });
+        }
+    </script>
+    <%- include('../admin/footer.ejs')%>

@@ -1,0 +1,110 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+        <!--================Wishlist =================-->
+        <section class="cart_area pt-5">
+            <div class="container">
+                <div class="cart_inner">
+                    <div class="table-responsive mt-5">
+                        <table class="table mt-5">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col" class=" text-warning">Product</th>
+                                    <th scope="col" class=" text-warning">Price</th>
+                                    <th scope="col " class=" text-warning">TO CART</th>
+                                    <th scope="col " class=" text-warning">Remove</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(products.length>0){
+                                    for(let i=0;i<products.length;i++){ %>
+                                        <tr>
+                                            <td>
+                                                <div class="media">
+                                                    <a href="/viewproduct?id=<%=products[i]._id%>">
+                                                        <div class="d-flex">
+                                                            <img src="/productimg/<%=products[i].image[0] %>" alt=""
+                                                                height="50">
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <p class="text-black">
+                                                                <%=products[i].name %>
+                                                            </p>
+                                                    </a>
+                                                </div>
+                    </div>
+                    </td>
+                    <td>
+                        <h5><i class="bi bi-currency-rupee">
+                                <%=products[i].offer_price %>
+                            </i></h5>
+                    </td>
+                    <td>
+                        <% if(products[i].stocks==0){%>
+                            <h5 class="text-danger"><strong>Stock Out</strong></h5>
+                            <%}else{%>
+                                <a onclick="addCart('<%=products[i]._id%>')"><i
+                                        class='bx bxs-cart-download bx-tada fa-3x text-primary'></i>
+                                </a>
+                                <%}%>
+                    </td>
+                    <td>
+                        <a onclick="removeWish('<%=products[i]._id %>')"><i
+                                class='bx bxs-x-circle bx-spin text-danger fa-2x'></i></a>
+                    </td>
+                    </tr>
+                    <% }%>
+
+                        <% } else{ %>
+                            <tr>
+                                <td colspan="5">Currently No Products in wishlist</td>
+                            </tr>
+
+                            <% } %>
+                                </tbody>
+                                </table>
+
+
+
+                </div>
+            </div>
+        </section>
+        <!--================End Cart Area =================-->
+
+        <script>
+            function removeWish(id) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are removing this product from Wishlist!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product has been removed.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        setTimeout(() => {
+                            location.href = `/removewishlist/?id=${id}`
+                        }, 1500)
+
+                    }
+                })
+            }
+            const page = document.getElementById('wish-page');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+
+        </script>
+
+        <%- include('../layouts/homefoot.ejs') %>

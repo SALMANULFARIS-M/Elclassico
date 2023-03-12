@@ -1,0 +1,112 @@
+
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+<div class="left">
+    <ul class="breadcrumb">
+
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+            <a class="active fs-5" href="/admin/banner">BANNER</a>
+        </li>
+    </ul>
+</div>
+
+ <!-- Table -->
+
+ <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Categories</h4>
+            <div class="d-flex mb-2" style="float: right;">
+                <a href="/admin/addbanner"><button class="btn btn-primary">Add banner</button></a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover " id="myTable">
+                    <thead>
+                        <tr>
+                            <th>index</th>
+                            <th>image</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% if(banner.length> 0){
+                        for(let i=0;i<banner.length;i++){ %>
+                                <tr>
+                                    <td class="text-light">
+                                        <%=[i+1] %>
+                                    </td>
+                                    <td><img src="/productimg/<%=banner[i].image%>" alt="Banner Image"
+                                            style="height: 3em; width: 3em; border-radius: 0%;"></td>
+                                    <td class="text-white">
+                                        <%= banner[i].title %>
+                                    </td>
+                                    <td class="text-white" style=" max-width: 0;
+                                    overflow:  auto;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;">
+                                        <div class="w-25"><%= banner[i].description %></div>
+                                    </td>
+
+                                    <td class="text-light">
+                                        <div class="d-flex">
+                                            <!-- <a href="/admin/editbanner?id=<%= banner[i]._id %>"
+                                                class="btn btn-outline-primary btn-icon-text mx-3"><i
+                                                    class="mdi mdi-file-check btn-icon-prepend"></i>Edit</a> -->
+                                            <form action="/admin/deletebanner?id=<%= banner[i]._id %>"
+                                                method="post" id="banner">
+                                                <button onclick="formSubmit()" class="btn btn-inverse-danger"><i
+                                                        class="mdi  mdi-delete-sweep"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% } } else{ %>
+                                    <tr>
+                                        <td colspan="5">No Category</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function formSubmit() {
+        event.preventDefault(); // prevent form submit
+        let form = event.target.form; // storing the form
+        console.log("h");
+        swal({
+            title: "Are you sure?",
+            text: "But you will still be able to retrieve this file.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+
+        },
+            function (isConfirm) {
+
+                if (isConfirm) {
+                    console.log("hoo");
+const form = document.getElementById("banner")
+                    form.submit();          // submitting the form when user press yes
+                } else {
+                    swal("Cancelled", "Your file is safe :)", "error");
+                }
+            });
+    }
+
+</script>
+
+<%- include('../admin/footer.ejs')%>

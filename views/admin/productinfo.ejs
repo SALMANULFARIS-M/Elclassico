@@ -1,0 +1,154 @@
+
+
+  <%- include('../admin/sidenav-topnav.ejs')%>
+
+
+
+    <div class="left">
+      <ul class="breadcrumb">
+
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+          <a class="active fs-5" href="/admin/products">PRODUCTS</a>
+        </li>
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+          <a class="active fs-5" href="">View</a>
+        </li>
+      </ul>
+    </div>
+    <!-- Table -->
+    <div class="container">
+      <div class="main-body">
+
+        <div class="row gutters-sm">
+          <div class="col-md-12">
+            <div class="card mb-3">
+              <div class="d-flex align-items-center text-center justify-content-start">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide w-25 mx-5 " data-bs-ride="carousel">
+                  <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                      aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                      aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                      aria-label="Slide 3"></button>
+                  </div>
+                  <div>
+                    <h4 class="mb-3">
+                      <%= product.name %>
+                    </h4>
+                  </div>
+                  <div class="carousel-inner">
+                    <% for(let i=0;i<product.image.length;i++){ %>
+
+                      <div class="carousel-item active align-items-center" data-bs-interval="10000" style="height: 20em; background-color: rgb(252, 252, 252);">
+                        <img src="/productimg/<%=product.image[i]%>" class="d-block w-100 my-5"  alt="...">
+                      </div>
+                      <% } %>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide= "prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+     
+                </div>
+                <div class="col-lg-8">
+                  <div class="card mb-4 mt-3 me-4">
+                    <div class="card-body" style="border: solid; border-color: rgb(143, 148, 152); border-radius: .5em;">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0 text-secondary fs-6 text-start">Gross Price :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt>
+                            <i class="bi bi-currency-rupee"></i><%= product.gross_price %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0 text-secondary fs-6 text-start">Offer Price :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt>
+                            <i class="bi bi-currency-rupee"></i><%= product.offer_price %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3 ">
+                          <p class="mb-0 text-secondary fs-6 text-start">Brand :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt>
+                            <%= product.brand %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0 text-secondary fs-6 text-start">Size :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt>
+                            <%= product.size %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3 ">
+                          <p class="mb-0 text-secondary fs-6 text-start">Stock :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt>
+                            <%= product.stocks %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <p class="mb-0 text-secondary fs-6 text-start">Category :</p>
+                        </div>
+                        <div class="col-sm-9">
+                          <dt class="mb-0 ">
+                            <%= product.category.name %>
+                          </dt>
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <div class="col-sm-3 ">
+                          <p class="mb-0 text-secondary fs-6 text-start">Description :</p>
+                        </div>
+                        <div class="col-sm-9 ">
+                          <h5 class="text-muted mb-0 text-start">
+                            <%= product.description %>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
+    <%- include('../admin/footer.ejs')%>

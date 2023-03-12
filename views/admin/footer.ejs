@@ -1,0 +1,104 @@
+<script>
+  const offer = document.getElementById("offer");
+
+  offer.addEventListener("input", function () {
+    const gross = document.getElementById("gross").value;
+    if (Number(offer.value) > Number(gross)) {
+      offer.setCustomValidity("Offer Price should be lesser than Gross Price");
+    } else {
+      offer.setCustomValidity("");
+    }
+  });
+  function numberValidate() {
+    let number = document.querySelector('input[type="number"]');
+    const value = number.value;
+    console.log(value);
+    if (value < 0) {
+      event.preventDefault;
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "warning",
+        title: "Number should be postive number",
+      });
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  [type="search"] {
+    color: white;
+    float: left;
+  }
+  .dataTables_wrapper .dataTables_length {
+    display: none;
+  }
+  .dataTables_wrapper .dataTables_filter {
+    float: left;
+    text-align: right;
+  }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
+<script>
+  let table = $("#myTable").DataTable({
+    search: {
+      search: "",
+      searchPlaceholder: "Search...",
+    },
+    language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search...",
+    },
+    initComplete: function (settings, json) {
+      $('.dataTables_filter input[type="search"]').css("color", "white");
+    },
+  });
+</script>
+
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="/assets/vendors/js/vendor.bundle.base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="/assets/vendors/chart.js/Chart.min.js"></script>
+<script src="/assets/vendors/progressbar.js/progressbar.min.js"></script>
+<script src="/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+<script src="/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<script src="/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="/assets/js/off-canvas.js"></script>
+<script src="/assets/js/hoverable-collapse.js"></script>
+<script src="/assets/js/misc.js"></script>
+<script src="/assets/js/settings.js"></script>
+<script src="/assets/js/todolist.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="/assets/js/dashboard.js"></script>
+<!-- End custom js for this page -->
+<script src="/assets/js/chart.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+  crossorigin="anonymous"
+></script>
+</body>
+</html>

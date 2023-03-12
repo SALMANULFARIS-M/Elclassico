@@ -1,0 +1,111 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+  <div class="left">
+    <ul class="breadcrumb">
+
+      <li><i class='bx bx-chevron-right fs-3'></i></li>
+      <li>
+        <a class="active fs-5" href="/admin/category">CATEGORY</a>
+      </li>
+      <li><i class='bx bx-chevron-right fs-3'></i></li>
+      <li>
+        <a class="active fs-5" href="">EditCategory</a>
+      </li>
+    </ul>
+  </div>
+  <!-- table -->
+
+  <form id="category_form" method="post" enctype="multipart/form-data">
+    <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add New Category</h4>
+          <%if(typeof message !=='undefined' ){ %>
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+              <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+              <div class="mx-2">
+                <%= message%>
+              </div>
+            </div>
+            <% } %>
+              <div class="form-group">
+                <div class="input-group">
+
+                  <input type="text" class="form-control " placeholder="Category Name" name="category"
+                    aria-label="Username" aria-describedby="basic-addon1" value="<%=categoryData.name%>">
+                  <input type="hidden" name="id" value="<%= categoryData._id%>">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <img src="/productimg/<%=categoryData.image%>" alt="" id="imgView" height="70">
+                <div class="input-group">
+                  <div class="input-group-append">
+
+                    <div class="custom-file">
+
+                      <label class="form-label " for="customFile">Choose a image for
+                        Category</label>
+                      <input type="file" class="form-control ps-3" onchange="viewImage(event)" name="Image"
+                        id="customFile" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success mt-5">Save</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </form>
+
+
+  <script>
+    function viewImage(event) {
+      document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
+    }
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $("#category_form").submit((e) => {
+      e.preventDefault();
+      var formData = new FormData($("#category_form")[0]); // create FormData object from form
+      const path = document.getElementById('imgView')
+      event.preventDefault()
+      $.ajax({
+        url: "/admin/editcategory",
+        method: "post",
+        data: formData, // use FormData object as data
+        dataType: "json",
+        contentType: false, // set contentType to false, so that jQuery doesn't try to set a content-type header
+        processData: false, // set processData to false, so that jQuery doesn't try to process the FormData object
+        success: function (response) {
+          if (response.success == true) {
+            // redirect to success page
+            window.location.href = "/admin/category";
+          } else if (response.message) {
+
+            // display error message
+            Swal.fire({
+              title: `<span style='color: red;'>${response.message}</span>`,
+              showClass: {
+                popup: "animate__animated animate__fadeInDown",
+              },
+              hideClass: {
+                popup: "animate__animated animate__fadeOutUp",
+              },
+            });
+          }
+        }
+      });
+    });
+
+  </script>
+
+
+
+
+  <%- include('../admin/footer.ejs')%>

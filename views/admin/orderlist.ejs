@@ -1,0 +1,261 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+
+
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/orders">ORDERS</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Table -->
+    <div class="row col-12 ms-1 h-0">
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="d-flex align-items-center align-self-start text-center">
+                                <h3 class="mb-0 text-light text-center">
+                                    <%=pCount%>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-warning ">
+                                <i class='bx bxs-bookmark-plus bx-flashing ' ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">PLACED</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7 ">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">
+                                    <%=sCount%>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-info">
+                                <i class='bx bxs-package bx-flashing fa-2x' ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">SHIPPED</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="">
+                                <h3 class="mb-0" id="earnings">
+                                    <%=ofdCount%>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-primary">
+                                <i class='bx bxs-truck bx-flashing fa-2x' ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">OUT FOR DELIVERY</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">
+                                    <%=dCount%>
+                                </h3>
+
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-success ">
+                                <i class='bx bxs-box bx-flashing fa-2x' ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">DELIVERED</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">
+                                    <%=cCount%>
+                                </h3>
+
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-danger ">
+                                <i class='bx bx-window-close bx-flashing fa-2x'></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">CANCELLED</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-sm-4 grid-margin stretch-card">
+            <div class="card h-75">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">
+                                    <%=rCount%>
+                                </h3>
+
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="icon icon-box-danger ">
+                                <i class='bx bx-log-out-circle bx-flashing fa-2x' ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">RETURNED</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card h-75">
+            <div class="card-body">
+                <h4 class="card-title">Orders</h4>
+                <div class="d-flex justify-content-between">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>OrderID</th>
+                                <th>Username</th>
+                                <th>Order Date</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
+                                <th>view</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(orderData.length>0){
+                                for(let i=0;i<orderData.length;i++){ %>
+                                    <tr>
+                                        <td class="text-light">
+                                            <%=[i+1] %>
+                                        </td>
+                                        <td class="text-light">
+                                            <%= orderData[i]._id %>
+                                        </td>
+                                        <td class="text-light">
+                                            <%= orderData[i].userId.name%>
+                                        </td>
+                                        <td class="text-light">
+                                            <%= orderData[i].date.slice(0,16) %>
+                                        </td>
+                                        <%if(orderData[i].payment_status=='COMPLETED' ){%>
+                                            <td class="text-success">
+
+                                                <%= orderData[i].payment_status %>
+                                            </td>
+                                            <%}else{%>
+                                                <td class="text-danger">
+
+                                                    <%= orderData[i].payment_status %>
+                                                </td>
+                                                <%}%>
+
+
+                                                    <td class="text-light">
+
+                                                        <%if(orderData[i].order_status=='PLACED' ){%>
+                                                            <button class="btn btn-outline-warning">
+                                                                <%= orderData[i].order_status %>
+                                                            </button>
+                                                            <%}else if(orderData[i].order_status=='SHIPPED' ){%>
+                                                                <button class="btn btn-outline-info">
+                                                                    <%= orderData[i].order_status %>
+                                                                </button>
+                                                                <%}else if(orderData[i].order_status=='OUT FOR DELIVERY'
+                                                                    ){%>
+                                                                    <button class="btn btn-outline-primary">
+                                                                        <%= orderData[i].order_status %>
+                                                                    </button>
+                                                                    <%}else if(orderData[i].order_status=='DELIVERED'
+                                                                        ){%>
+                                                                        <button class="btn btn-outline-success">
+                                                                            <%= orderData[i].order_status %>
+                                                                        </button>
+                                                                        <%} else
+                                                                            if(orderData[i].order_status=='CANCELLED'
+                                                                            ){%>
+                                                                            <button class="btn btn-outline-danger">
+                                                                                <%= orderData[i].order_status %>
+                                                                            </button>
+                                                                            <%} else
+                                                                                if(orderData[i].order_status=='RETURNREQ'
+                                                                                ){%>
+                                                                                <button
+                                                                                    class="btn btn-outline-secondary">
+                                                                                    <%= orderData[i].order_status %>
+                                                                                </button>
+                                                                                <%} else
+                                                                                    if(orderData[i].order_status=='RETURNED'
+                                                                                    ){%>
+                                                                                    <button
+                                                                                        class="btn btn-outline-danger text-light">
+                                                                                        <%= orderData[i].order_status %>
+                                                                                    </button>
+                                                                                    <%}%>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/admin/vieworder?id=<%= orderData[i]._id %>"
+                                                            class="btn btn-outline-info"><i class="fa fa-user-secret"
+                                                                aria-hidden="true"></i>Details</a>
+                                                    </td>
+
+                                    </tr>
+                                    <% } } else{ %>
+                                        <tr>
+                                            <td colspan="5">Currently no orders have...</td>
+                                        </tr>
+                                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+
+    <%- include('../admin/footer.ejs')%>

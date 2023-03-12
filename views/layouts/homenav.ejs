@@ -1,0 +1,97 @@
+ <!-- Start Header Area -->
+ <header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box bg-black">
+            <div class="container bg-black">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="/"><img src="/images/elClassico-logo.png" alt=""
+                        height="50"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="bi bi-card-list fa-2x text-warning"></i>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto ">
+                        <li class="nav-item "><a class="nav-link text-light" id="home-page" href="/">Home</a></li>
+                        <li class="nav-item "><a class="nav-link text-light " id="shop" href="/shop">Shop</a></li>
+
+                        <li class="nav-item"><a class="nav-link text-light" id="contact-page" href="/contact">Contact</a></li>
+                        <% if(typeof userData==="undefined" ){ %>
+                            <li class="nav-item submenu dropdown">
+                                <a href="" class="nav-link dropdown-toggle text-light" data-toggle="dropdown"
+                                    role="button" aria-haspopup="true" id="my-account" aria-expanded="false">My Account</a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item bg-secondary"><a class="nav-link" href="/signin">signin</a>
+                                    </li>
+                                    <li class="nav-item bg-secondary"><a class="nav-link" href="/signup">signup</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <% } else {%>
+                                <li class="nav-item submenu dropdown">
+                                    <a href="" class="nav-link dropdown-toggle text-light" data-toggle="dropdown"
+                                        role="button" aria-haspopup="true" id="my-account" aria-expanded="false">
+                                        <%=userData.name%>
+                                    </a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item bg-secondary"><a class="nav-link" href="/logout">LOG
+                                                OUT</a></li>
+                                        <li class="nav-item bg-secondary"><a class="nav-link"
+                                                href="/profile">Profile</a></li>
+                                                <li class="nav-item bg-secondary"><a class="nav-link" href="/myorder">My Order</a></li>
+                                    </ul>
+                                </li>
+                                <% } %>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="/wishlist" ><i class="bi bi-heart-fill text-light" id="wish-page">
+                            <% if(typeof userData !=="undefined" ){ %>
+                                <%if(wishCount){%><span
+                                                class="position-absolute badge rounded-circle badge-notification bg-danger text-light"
+                                                style="line-height: 12px;">
+
+                                                <%=wishCount%>
+
+                                            </span>
+                                            <% } %>
+                                            <% } %>
+                        </i></a></li>
+                        <li class="nav-item"><a href="/cart"  class="text-light"><i id="cart-page"
+                                    class="bi bi-cart-plus-fill position-relative" >
+                                    <% if(typeof userData !=="undefined" ){ %>
+                                        <%if(cartCount){%> <span
+                                                class="position-absolute badge rounded-circle badge-notification bg-danger text-light"
+                                                style="line-height: 12px;">
+
+                                                <%=cartCount%>
+
+                                            </span>
+                                            <% } %>
+                                                <% } %>
+                                </i></a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="search" ><i class="bi bi-search text-light" id="search"></i></button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="search_input" id="search_input_box">
+        <div class="container">
+            <form class="d-flex justify-content-between">
+                <input type="text" class="form-control" id="search_input" onkeyup="filterProducts()" placeholder="Search Here" autocomplete="off">
+                <button type="submit" class="btn"></button>
+                <i class="bi bi-x-circle text-light fa-2x" id="close_search" title="Close Search"></i>
+            </form>
+        </div>
+    </div>
+</header>
+
+<!-- End Header Area -->

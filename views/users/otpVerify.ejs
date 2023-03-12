@@ -1,0 +1,266 @@
+<%- include('../layouts/header.ejs') %>
+
+  <div class="container-fluid vh-100 d-flex justify-content-center align-items-center" style="
+    background-image: url('/images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  ">
+    <div class="card p-5" style="background: transparent; backdrop-filter: blur(10px); height: 25rem">
+      <div class="text-center">
+        <img src="/images/football-2.jpg" width="60" class="rounded-circle" />
+      </div>
+      <div class="text-center mt-3">
+        <span class="info-text text-white fs-6">Please verify with OTP</span>
+      </div>
+
+      <form id="otp_form">
+        <div class="verification">
+          <div class="title center ms-5">
+            <p class="ms-3">An OTP has been sent <span class="mobile"></span></p>
+          </div>
+          <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+            <input class="m-2 text-center form-control rounded" type="number" name="otp1" id="first" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="number" name="otp2" id="second" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="number" name="otp3" id="third" maxlength="1" />
+            <input class="m-2 text-center form-control rounded" type="number" name="otp4" id="fourth" maxlength="1" />
+          </div>
+        </div>
+        <%if(typeof message !=='undefined' ){ %>
+          <div class="alert alert-danger d-flex align-items-center mt-3" role="alert" style="height: 2rem">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="5" role="img" aria-label="Danger:">
+              <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div class="fw-bold">
+              <%= message%>
+            </div>
+          </div>
+          <% } %>
+            <div class="mt-5 d-flex align-items-center" style="float: right">
+              <button class="learn-more" onclick="otpVerify()">
+                <span class="circle" aria-hidden="true">
+                  <span class="icon arrow"></span>
+                </span>
+                <span class="button-text">Verify</span>
+              </button>
+            </div>
+      </form>
+      <a href="/resendotp" class="btn btn-primary mt-3" id="myButton" style="display: none">Resend OTP</a>
+    </div>
+  </div>
+
+  <script>
+    function otpVerify() {
+      event.preventDefault();
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      $.ajax({
+        url: "/otpverify",
+        method: "post",
+        data: $("#otp_form").serialize(),
+        success: function (response) {
+          if (response.success) {
+            location.href = "/";
+          } else if (response.message) {
+            Toast.fire({
+              icon: "error",
+              title: response.message,
+            });
+          }
+        },
+      });
+    }
+  </script>
+
+  <style>
+    button {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      outline: none;
+      border: 0;
+      vertical-align: middle;
+      text-decoration: none;
+      background: transparent;
+      padding: 0;
+      font-size: inherit;
+      font-family: inherit;
+    }
+
+    button.learn-more {
+      width: 12rem;
+      height: auto;
+    }
+
+    button.learn-more .circle {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      position: relative;
+      display: block;
+      margin: 0;
+      width: 3rem;
+      height: 3rem;
+      background: #0f1678;
+      border-radius: 1.625rem;
+    }
+
+    button.learn-more .circle .icon {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      background: #fff;
+    }
+
+    button.learn-more .circle .icon.arrow {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      left: 0.625rem;
+      width: 1.125rem;
+      height: 0.125rem;
+      background: none;
+    }
+
+    button.learn-more .circle .icon.arrow::before {
+      position: absolute;
+      content: "";
+      top: -0.29rem;
+      right: 0.0625rem;
+      width: 0.625rem;
+      height: 0.625rem;
+      border-top: 0.125rem solid #fff;
+      border-right: 0.125rem solid #fff;
+      transform: rotate(45deg);
+    }
+
+    button.learn-more .button-text {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0.75rem 0;
+      margin: 0 0 0 1.85rem;
+      color: #282936;
+      font-weight: 700;
+      line-height: 1.6;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    button:hover .circle {
+      width: 100%;
+    }
+
+    button:hover .circle .icon.arrow {
+      background: #fff;
+      transform: translate(1rem, 0);
+    }
+
+    button:hover .button-text {
+      color: #fff;
+    }
+
+    .height-100 {
+      height: 100vh;
+    }
+
+    .card {
+      width: 400px;
+      border: none;
+      height: 300px;
+      box-shadow: 0px 5px 20px 0px #d2dae3;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card h6 {
+      color: red;
+      font-size: 20px;
+    }
+
+    .inputs input {
+      width: 40px;
+      height: 40px;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+    .card-2 {
+      background-color: #fff;
+      padding: 10px;
+      width: 350px;
+      height: 100px;
+      bottom: -50px;
+      left: 20px;
+      position: absolute;
+      border-radius: 5px;
+    }
+
+    .card-2 .content {
+      margin-top: 50px;
+    }
+
+    .card-2 .content a {
+      color: red;
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      border: 2px solid red;
+    }
+
+    .validate {
+      border-radius: 20px;
+      height: 40px;
+      background-color: red;
+      border: 1px solid red;
+      width: 140px;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+      function OTPInput() {
+        const inputs = document.querySelectorAll("#otp > *[id]");
+        for (let i = 0; i < inputs.length; i++) {
+          inputs[i].addEventListener("keydown", function (event) {
+            if (event.key === "Backspace") {
+              inputs[i].value = "";
+              if (i !== 0) inputs[i - 1].focus();
+            } else {
+              if (i === inputs.length - 1 && inputs[i].value !== "") {
+                return true;
+              } else if (event.keyCode > 47 && event.keyCode < 58) {
+                inputs[i].value = event.key;
+                if (i !== inputs.length - 1) inputs[i + 1].focus();
+                event.preventDefault();
+              } else if (event.keyCode > 64 && event.keyCode < 91) {
+                inputs[i].value = String.fromCharCode(event.keyCode);
+                if (i !== inputs.length - 1) inputs[i + 1].focus();
+                event.preventDefault();
+              }
+            }
+          });
+        }
+      }
+      OTPInput();
+    });
+  </script>
+
+  <%- include('../layouts/footer.ejs') %>

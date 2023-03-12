@@ -1,0 +1,115 @@
+<script>
+function nameCheck() {
+            let nameInput = document.getElementById("username");
+            nameInput.addEventListener("input", function () {
+                const value = nameInput.value
+                const name = value.replace(/\s/g, "");
+                if (name.length<4) {
+                    nameInput.setCustomValidity("Please enter minimum 4 character");
+                    event.preventDefault();
+                } else {
+                    nameInput.setCustomValidity("");
+                }
+            });
+        }
+
+        function emailCheck() {
+            const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
+            let emailInput = document.getElementById("email");
+            emailInput.addEventListener("input", function () {
+                if (regex.test(emailInput.value) == false) {
+                    emailInput.setCustomValidity("Please enter a valid email");
+                    event.preventDefault();
+                } else {
+                    emailInput.setCustomValidity("");
+                }
+            });
+        }
+
+        function mobileCheck() {
+            let mobileInput = document.getElementById("mobile")
+            mobileInput.addEventListener("input", function () {
+                let mobile = mobileInput.value;
+                if (mobile.length != 10) {
+                    mobileInput.setCustomValidity("Please enter a valid 10-digit mobile number");
+                } else {
+                    mobileInput.setCustomValidity("");
+                }
+            });
+        }
+
+        function passwordCheck() {
+            let pswInput = document.getElementById("psw");
+            pswInput.addEventListener("input", function () {
+                if (pswInput.value.length < 6) {
+                    pswInput.setCustomValidity("Password should need minimum 6 character");
+                } else {
+                    pswInput.setCustomValidity("");
+                }
+            });
+        }
+
+        function confirmpsw() {
+            let pswInput = document.getElementById("psw");
+            let cpswInput = document.getElementById("re_psw");
+            cpswInput.addEventListener("input", function () {
+                if (cpswInput.value !== pswInput.value) {
+                    cpswInput.setCustomValidity("Confirm Password is incorrect");
+                } else {
+                    cpswInput.setCustomValidity("");
+                }
+            });
+        }
+
+
+    function numberValidate() {
+        let number = document.querySelector('input[type="number"]')
+        let value = number.value
+        if (value < 0) {
+            event.preventDefault();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: response.message
+            })
+        }
+    }
+
+    function pswDisplay() {
+        let psw = document.getElementById("psw");
+
+
+        if (psw.type === "password") {
+            psw.type = "text";
+            document.getElementById("eye").className = "fa fa-eye";
+        } else {
+
+            psw.type = "password";
+            document.getElementById("eye").className = "fa fa-eye-slash";
+        }
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

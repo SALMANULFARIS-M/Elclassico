@@ -1,0 +1,92 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/coupon">Coupon</a>
+            </li>
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/addcoupon">Add Coupon</a>
+            </li>
+        </ul>
+    </div>
+    <!-- table -->
+
+    <form action="/admin/addcoupon" method="post" id="COUPON">
+        <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add New Coupon</h4>
+                    <%if(typeof message !=='undefined' ){ %>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+                            <div class="mx-2">
+                                <%= message%>
+                            </div>
+                        </div>
+                        <% } %>
+                            <div class="form-group">
+                                <div class="input-group">
+
+                                    <input type="text" class="form-control me-3" placeholder="Coupon Name" name="coupon"
+                                        aria-label="Username" aria-describedby="basic-addon1" required>
+                                        <input type="number" onkeyup="numberValidate()" id="Percentage" on
+                                        class="form-control " placeholder="Discount Percentage" name="disc_per"
+                                        aria-label="Username" aria-describedby="basic-addon1" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="number" class="form-control me-3" placeholder="Minimum Amount"
+                                    id="min-amount" onkeyup="numberValidate()" name="min_amount"
+                                    aria-label="Username" aria-describedby="basic-addon1" required>
+                                            <input type="number" class="form-control" placeholder="maximum Discount"
+                                                id="min-disc" onkeyup="numberValidate()" name="max_disc"
+                                                aria-label="Username" aria-describedby="basic-addon1" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group"><label for="" class="me-2 pt-2">Select a expiry Date :</label>
+                                            <input required type="date" class="" placeholder="maximum Discount"
+                                                id="min-disc" name="date"
+                                                aria-label="Username" aria-describedby="basic-addon1" >
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-5" style="margin-left: 50% ;">Save</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </form>
+
+
+    <script>
+            const Percentage = document.getElementById("Percentage")
+            const discount = document.getElementById("min-disc")
+
+            Percentage.addEventListener("input", function () {
+                if (Percentage.value >= 81) {
+                    Percentage.setCustomValidity("Discount percentage should be below 80%");
+                } else {
+                    Percentage.setCustomValidity("");
+                }
+            });
+            discount.addEventListener("input", function () {
+                const minimum = document.getElementById("min-amount").value
+                let val =parseInt(minimum / 2)
+                if (discount.value >val) {
+                    discount.setCustomValidity("Maximum discount should be "+val+"or half of the minimum amount");
+                } else {
+                    discount.setCustomValidity("");
+                }
+            });
+
+    </script>
+
+    <%- include('../admin/footer.ejs')%>

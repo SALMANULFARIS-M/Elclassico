@@ -1,0 +1,137 @@
+<%- include('../layouts/homehead.ejs') %>
+
+
+    <%- include('../layouts/homenav.ejs') %>
+
+        <!--================Single Product Area =================-->
+        <div class="product_image_area mt-5">
+            <div class="container">
+                <div class="row s_product_inner">
+                    <div class="col-lg-6">
+                        <div class="s_Product_carousel">
+                            <% for(let i=0;i<product.image.length;i++){ %>
+
+                                <div class="single-prd-item image-container" id="image-container">
+                                    <a href="/productimg/<%=product.image[i]%>" class="MagicZoom"><img class="img-fluid"
+                                            src="/productimg/<%=product.image[i]%>" alt=""></a>
+
+                                </div>
+                                <% } %>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                        <div class="s_product_text">
+                            <h3>
+                                <%=product.name%>
+                            </h3>
+                            <h2><i class="bi bi-currency-rupee"></i>
+                                <%=product.offer_price%>.00
+                            </h2>
+                            <del class="fs-6 fw-bold text-danger"><i class="bi bi-currency-rupee"></i>
+                                <%=product.gross_price%>.00
+                            </del>
+                            <ul class="list mt-4">
+                                <li><a class="active"><span>Category</span> : <%=product.category.name%></a></li>
+                                <li><a href="#" class="d-flex"><span class="">Availibility</span> :
+                                        <% if(product.stocks==0){%>
+                                            <h6 class="text-danger ms-2 mt-1">STOCK OUT</h6>
+                                            <%} else if(product.stocks <=5){%>
+                                                <h6 class="text-warning ms-2 mt-1">LIMITED STOCK </h6>
+                                                <%}else{%>
+                                                    <h6 class="text-success ms-2 mt-1">IN STOCK</h6>
+                                                    <%}%>
+
+                                    </a></li>
+                                <li><a class="active"><span>Size</span> : <%=product.size%></a></li>
+                                <li><a href="#" class="active"><span>Brand</span> : <%=product.brand%> </a></li>
+                            </ul>
+
+
+                            <div class="card_area d-flex align-items-center mt-5">
+
+                                <% if(typeof userData==="undefined" ){ %>
+
+                                    <a class="primary-btn" href="/signin">Add to Cart</a>
+                                    <a class="icon_btn" href="/signin"><i class="bi bi-heart-fill"></i></a>
+
+                                    <% } else {%>
+
+                                        <% if(product.stocks !=0){%>
+                                            <a class="primary-btn" onclick="addCart('<%=product._id%>')">Add to Cart</a>
+                                            <%}%>
+
+                                                <% if(wishlist.includes(product._id)){ %>
+                                                    <a onclick="wishlist('<%=product._id%>')" class="icon_btn">
+                                                        <i class="bi bi-heart-fill text-danger"
+                                                            id="wish-<%=product._id%>"></i>
+                                                    </a>
+                                                    <% } else {%>
+                                                        <a onclick="wishlist('<%=product._id%>')" class="icon_btn">
+                                                            <i class="bi bi-heart-fill" id="wish-<%=product._id%>"></i>
+
+                                                        </a>
+                                                        <%}%>
+
+                                                            <% }%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--================End Single Product Area =================-->
+
+
+        <!--================Product Description Area =================-->
+        <section class="product_description_area">
+            <div class="container">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                            aria-selected="true">Description</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <p>
+                            <%=product.description%>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================End Product Description Area =================-->
+
+
+
+
+
+
+
+
+        <script>
+
+            const incrementButton = document.getElementById("increment");
+            const decrementButton = document.getElementById("decrement");
+            const quantityInput = document.getElementById("quantity");
+
+            incrementButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+            });
+
+            decrementButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                if (parseInt(quantityInput.value) > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                }
+            });
+            const page = document.getElementById('shop');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+        <%- include('../layouts/homefoot.ejs') %>

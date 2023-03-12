@@ -1,0 +1,112 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+
+
+<div class="left">
+    <ul class="breadcrumb">
+
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+            <a class="active fs-5" href="/admin/coupon">Coupon</a>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Table -->
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Coupon</h4>
+            <div class="d-flex mb-2" style="float: right;">
+                <a href="/admin/addcoupon"><button class="btn btn-primary">Add coupon </button></a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover " id="myTable">
+                    <thead>
+                        <tr>
+                            <th>index</th>
+                            <th>Name</th>
+                            <th>Discount</th>
+                            <th>Max Discount</th>
+                            <th>Min Amount</th>
+                            <th>Exp Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% if(coupon.length> 0){
+                        for(let i=0;i<coupon.length;i++){ %>
+                                <tr>
+                                    <td class="text-light">
+                                        <%=[i+1] %>
+                                    </td>
+                                    <td class="text-light">
+                                        <%=coupon[i].code%>
+                                        </td>
+                                    <td class="text-white">
+                                        <%= coupon[i].discountPercentage %>%
+                                    </td>
+
+                                    <td class="text-light">
+                                        <%= coupon[i].maxDiscount %>
+                                    </td>
+                                    <td class="text-light">
+                                        <%= coupon[i].minAmount %>
+                                    </td>
+                                    <td class="text-light">
+                                        <%= coupon[i].expDate.toString().slice(0,10) %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/deletecoupon?id=<%= coupon[i]._id %>"
+                                            method="post" id="form-<%= coupon[i]._id %>">
+                                            <button onclick="formSubmit('<%= coupon[i]._id %>')" class="btn btn-inverse-danger"><i
+                                                    class="mdi  mdi-delete-sweep"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% } } else{ %>
+                                    <tr>
+                                        <td colspan="5">No Cupons are created</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function formSubmit(id) {
+        event.preventDefault(); // prevent form submit
+        let form = event.target.form; // storing the form
+        swal({
+            title: "Are you sure?",
+            text: "But you will still be able to retrieve this file.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    const form = document.getElementById(`form-${id}`)
+                    form.submit();          // submitting the form when user press yes
+                } else {
+                    swal("Cancelled", "Your file is safe :)", "error");
+                }
+            });
+    }
+
+</script>
+
+<%- include('../admin/footer.ejs')%>

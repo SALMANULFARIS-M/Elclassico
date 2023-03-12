@@ -1,0 +1,109 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+        <section style="background-color: #eee;" class="pb-5 ">
+
+            <div class="container" style="padding-top: 10em;">
+
+                <table class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Products</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(orderData.length>0){
+                            for(let i=0;i<orderData.length;i++){ %>
+                                <tr>
+                                    <td>
+                                        <div class="">
+
+                                            <div class="ms-3">
+                                                <p class="fw-bold mb-1">
+                                                    <%=orderData[i]._id%>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <%for(let j=0;j<orderData[i].products.length;j++){ %>
+                                            <p class="fw-normal mb-1 justify-content-between"><img
+                                                    src="/productimg/<%=orderData[i].products[j].productId[0].image[0]%>"
+                                                    height="20" class="rounded-circle"><span class="ms-2">
+                                                    <%=orderData[i].products[j].productId[0].name%>
+                                                </span></p>
+                                            <% } %>
+                                    </td>
+
+
+                                    <td>
+                                        <p class="fw-bold mb-1">
+                                            <%=orderData[i].date%>
+                                        </p>
+                                    </td>
+                                    <td>
+
+                                        <%if(orderData[i].order_status=='PLACED' ){%>
+                                            <button class="btn btn-outline-warning">
+                                                <%= orderData[i].order_status %>
+                                            </button>
+                                            <%}else if(orderData[i].order_status=='SHIPPED' ){%>
+                                                <button class="btn btn-outline-secondary">
+                                                    <%= orderData[i].order_status %>
+                                                </button>
+                                                <%}else if(orderData[i].order_status=='OUT FOR DELIVERY' ){%>
+                                                    <button class="btn btn-outline-primary">
+                                                        <%= orderData[i].order_status %>
+                                                    </button>
+                                                    <%}else if(orderData[i].order_status=='DELIVERED' ){%>
+                                                        <button class="btn btn-outline-success">
+                                                            <%= orderData[i].order_status %>
+                                                        </button>
+                                                        <%}else if(orderData[i].order_status=='CANCELLED' ){%>
+                                                            <button class="btn btn-outline-danger">
+                                                                <%= orderData[i].order_status %>
+                                                            </button>
+                                                            <%} else if(orderData[i].order_status=='RETURNREQ' ){%>
+                                                                <button class="btn btn-outline-danger text-secondary">
+                                                                    <%= orderData[i].order_status %>
+                                                                </button>
+                                                                <%} else if(orderData[i].order_status=='RETURNED' ){%>
+                                                                    <button class="btn btn-outline-dark text-secondary">
+                                                                        <%= orderData[i].order_status %>
+                                                                    </button>
+                                                                    <%}%>
+
+                                    </td>
+                                    <td>
+                                        <a href="/vieworder/?id=<%=orderData[i]._id%>"> <button type="button"
+                                                class="btn text-info btn-sm btn-rounded">
+                                                More
+                                            </button></a>
+                                    </td>
+                                </tr>
+
+                    </tbody>
+                    <% } } else{ %>
+                        <tbody>
+                            <tr>
+                                <td colspan="5">Currently no orders have made...</td>
+                            </tr>
+                        </tbody>
+                        <% } %>
+
+                </table>
+            </div>
+        </section>
+
+        <script>
+            const page = document.getElementById('my-account');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+        </script>
+
+        <%- include('../layouts/homefoot.ejs') %>

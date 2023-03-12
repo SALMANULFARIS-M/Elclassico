@@ -1,0 +1,298 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+
+
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/orders">ORDERS</a>
+            </li>
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="">View</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Table -->
+    <div class="container">
+        <div class="main-body">
+
+            <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="d-flex align-items-start justify-content-between">
+
+                            <div class="col-lg-12">
+                                <div class="card mb-4 mt-3 me-4">
+                                    <div class="card-body"
+                                        style="border: solid; border-color: rgb(143, 148, 152); border-radius: .5em;">
+                                        <div class="row d-flex">
+                                            <div class="col-sm-3 justify-content-start ">
+                                                <p class="mb-0 text-secondary fs-6">OrderID :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <dt>
+                                                    <%= orderData._id %>
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row d-flex">
+                                            <div class="col-sm-3 ju">
+                                                <p class="mb-0 text-secondary fs-6">Customer Name :</p>
+                                            </div>
+                                            <div class="col-sm-9 align-items-end">
+                                                <dt>
+                                                    <%= orderData.userId.name %>
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 ">
+                                                <p class="mb-0 text-secondary fs-6">Order Date :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <dt>
+                                                    <%= orderData.date %>
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0 text-secondary fs-6">Delivery Address :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <dt class="text-muted">
+                                                    <strong class="me-2 text-muted">
+                                                        <%=address.address[0].name%>
+                                                    </strong> <strong class="text-muted">
+                                                        <%=address.address[0].mobile%>
+                                                    </strong>
+                                                    <br>
+                                                    <%=address.address[0].home%>,<%=address.address[0].street%>,
+                                                            <%=address.address[0].city%>,
+                                                                <%=address.address[0].district%><br>
+                                                                    <%=address.address[0].state%>,
+                                                                        <%=address.address[0].country%>,
+                                                                            <%=address.address[0].zip%>.
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 ">
+                                                <p class="mb-0 text-secondary fs-6">products :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+
+                                                <% for(let i=0;i<orderData.products.length;i++){ %>
+                                                    <dt class="d-flex">
+                                                        <img src=" /productimg/<%=orderData.products[i].productId[0].image[0]%>"
+                                                            height="30" alt="" class="me-4">
+                                                        <p class="me-3">
+                                                            <%=orderData.products[i].productId[0].name%>
+                                                        </p>
+                                                        <p class="me-4 ">x<%=orderData.products[i].quantity%>
+                                                        </p>
+                                                        <p class="me-3">&#x20B9;<%=orderData.products[i].price%>
+                                                        </p>
+                                                    </dt>
+                                                    <%}%>
+
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0 text-secondary fs-6">Total Price :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <dt class="mb-0 ">
+                                                    &#x20B9;<%= orderData.total_price %>
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0 text-secondary fs-6">Payment Method :</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <dt class="mb-0 ">
+                                                    <%= orderData.payment_method %>
+                                                </dt>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+
+
+                                        <form action="/admin/vieworder/?id=<%= orderData._id %>" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-secondary fs-6">Order Status :</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <dt class="mb-0 ">
+
+
+
+                                                        <%if(orderData.order_status=='CANCELLED' ){%>
+
+                                                            <input type="hidden" value="<%=orderData.order_status%>"
+                                                                name="order">
+                                                            <h5 class="text-danger">Customer cancelled the order</h5>
+                                                            <%}else{%>
+                                                                <%if(orderData.order_status=='DELIVERED' ||
+                                                                    orderData.order_status=='RETURNREQ'
+                                                                    ||orderData.order_status=='RETURNED' ){%>
+
+                                                                    <h5 class="text-success">
+                                                                        <%=orderData.order_status%>
+                                                                    </h5>
+
+                                                    </dt>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0 text-secondary fs-6">Payment Status :</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <dt class="mb-0 ">
+
+                                                        <%if(orderData.payment_status=='COMPLETED' ||
+                                                            orderData.payment_status=='RETURNED' ){%>
+                                                            <h5 class="text-success">
+                                                                <%= orderData.payment_status %>
+                                                            </h5>
+                                                            <input type="hidden" value="<%=orderData.payment_status%>"
+                                                                name="payment">
+                                                            <%}else{%>
+                                                                <select
+                                                                    style="border: none; background: transparent; color: white;"
+                                                                    name="payment">
+                                                                    <option value="<%= orderData.payment_status %>"
+                                                                        class="text-black">
+                                                                        <%= orderData.payment_status %>
+                                                                    </option>
+                                                                    <option class="formbold-form-input text-black">
+                                                                        PENDING
+                                                                    </option>
+                                                                    <option class="formbold-form-input text-black">
+                                                                        COMPLETED
+                                                                    </option>
+                                                                </select>
+                                                                <%}%>
+                                                    </dt>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <%if(orderData.order_status=='RETURNREQ' ){%>
+                                                <button type="submit" class="me-5 btn btn-info text-black"
+                                                    style="float: right;"
+                                                    onclick="approve('<%=orderData._id%>')">Approve</button>
+                                                <%}%>
+                                        </form>
+
+
+                                        <%}else{%>
+
+                                            <select style=" border: none; background: transparent; color: white;"
+                                                name="order">
+                                                <option value="<%= orderData.order_status %>" class="text-black">
+                                                    <%= orderData.order_status %>
+                                                </option>
+                                                <option class="formbold-form-input text-black">
+                                                    PLACED</option>
+                                                <option class="formbold-form-input text-black">
+                                                    SHIPPED</option>
+                                                <option class="formbold-form-input text-black">
+                                                    OUT
+                                                    FOR DELIVERY</option>
+                                                <option class="formbold-form-input text-black">
+                                                    DELIVERED</option>
+
+                                            </select>
+
+                                            </dt>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0 text-secondary fs-6">Payment Status :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <dt class="mb-0 ">
+
+                                            <%if(orderData.payment_status=='COMPLETED' ){%>
+                                                <h5 class="text-success">
+                                                    <%= orderData.payment_status %>
+                                                </h5>
+                                                <input type="hidden" value="<%=orderData.payment_status%>"
+                                                    name="payment">
+                                                <%}else{%>
+                                                    <select style="border: none; background: transparent; color: white;"
+                                                        name="payment">
+                                                        <option value="<%= orderData.payment_status %>"
+                                                            class="text-black">
+                                                            <%= orderData.payment_status %>
+                                                        </option>
+                                                        <option class="formbold-form-input text-black">
+                                                            PENDING
+                                                        </option>
+                                                        <option class="formbold-form-input text-black">
+                                                            COMPLETED
+                                                        </option>
+                                                    </select>
+
+                                        </dt>
+                                    </div>
+                                </div>
+                                <hr>
+                                <%}%>
+                                <%if(orderData.payment_status!='COMPLETED' || orderData.order_status != 'COMPLETED' ){%>
+                                    <button type="submit" class="me-5 btn btn-info text-black"
+                                        style="float: right;">Apply
+                                        Change</button>
+                                        <%}%>
+                                    </form>
+                                    <%}%>
+                                        <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    <script>
+        function approve(orderId) {
+            event.preventDefault()
+            $.ajax({
+                url: `/admin/approvereturn/${orderId}`,
+                method: "get",
+                success: function (response) {
+                    console.log("hello");
+                    if (response.success == true) {
+                        console.log("hey");
+                        location.href = "/admin/orders"
+                    }
+                }
+            })
+        }
+    </script>
+    <%- include('../admin/footer.ejs')%>

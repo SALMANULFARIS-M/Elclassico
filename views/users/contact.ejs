@@ -1,0 +1,77 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+
+        <!--================Contact Area =================-->
+        <section class="contact_area section_gap_bottom pt-5">
+            <div class="container">
+                <div id="mapBox" class="mapBox" data-lat="10.759266" data-lon="76.642919" data-zoom="13"
+                    data-info="678004, Palakkad, kerala, India." data-mlat="10.759266" data-mlon="76.642919">
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="contact_info">
+                            <div class="info_item">
+
+                                <i class="fa fa-map-marker-alt text-warning mr-3"></i>
+                                <h6>PPS, Palakkad</h6>
+                                <p>Kerala,India</p>
+                            </div>
+                            <div class="info_item">
+                                <i class="fa fa-phone-alt text-warning mr-3"></i>
+                                <h6>+91-8139851011</h6>
+                                <p>Mon to Fri 9am to 6 pm</p>
+                            </div>
+                            <div class="info_item">
+                                <i class="fa fa-envelope text-warning mr-3"></i>
+                                <h6>fsalmanul13@gamil.com</h6>
+                                <p>Send us your query anytime!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <form class="row contact_form" action="contact_process.php" method="post" id="contactForm"
+                            novalidate="novalidate">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Enter your name" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter your name'" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="email" name="email"
+                                        placeholder="Enter email address" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter mobile number'" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="subject" name="subject"
+                                        placeholder="Enter Subject" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter email address'" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="message" id="message" rows="1"
+                                        placeholder="Enter Message" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter Message'" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <button type="submit" value="submit" class="primary-btn">Send Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================Contact Area =================-->
+
+        <script>
+            const page = document.getElementById('contact-page');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+        </script>
+
+
+        <%- include('../layouts/homefoot.ejs') %>

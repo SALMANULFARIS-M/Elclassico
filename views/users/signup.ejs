@@ -1,0 +1,119 @@
+<%- include('../layouts/header.ejs') %>
+
+
+    <div class="mains vh-100">
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form class="register-form" id="signup-data" action="#">
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" onkeyup="nameCheck()" id="username" placeholder=" Name"
+                                    required autocomplete="off" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email" required
+                                    autocomplete="off" onkeyup="emailCheck()" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Phone"><i class="zmdi zmdi-email"></i></label>
+                                <input type="number" name="mobile" id="mobile" onkeyup="mobileCheck()"
+                                    placeholder="Your Phone Number" required autocomplete="off" />
+                            </div>
+                            <div class="form-group d-flex">
+                                <label for="pass"></label>
+                                <input type="password" name="psw" id="psw" placeholder="Password"
+                                    onkeyup="passwordCheck()" required autocomplete="off" />
+                                <i class="fa fa-eye-slash" aria-hidden="true" id="eye" onclick="pswDisplay()"></i>
+                            </div>
+                            <div class="form-groupl d-flex">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_psw" id="re_psw" placeholder="Repeat your password"
+                                    required onkeyup="confirmpsw()" />
+                            </div>
+                            <p id="pmessage"></p>
+                            <%if(typeof message !=='undefined' ){ %>
+                                <div class="pt-2">
+                                    <p class="fw-bolder text-danger text-center">
+                                        <%= message%>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <div
+                                        class="form-group form-button justify-content-center align-items-center d-flex mt-2">
+                                        <button type="submit" class="btn btn-warning fw-bold text-center">SIGN
+                                            UP</button>
+                                    </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="/images/kicking.png" alt="sing up image"></figure>
+                        <a href="/signin" class="signup-image-link fw-bold">I am already member</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#signup-data').submit(function (event) {
+                event.preventDefault();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                $.ajax({
+                    url: '/signup',
+                    method: "post",
+                    data: $("#signup-data").serialize(),
+                    success: function (response) {
+                        if (response.success == true) {
+                            location.href = "/otpVerify";
+                        } else if (response.message) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'warning',
+                                title: 'Sorry, something went wrong'
+                            });
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        }
+                    }
+                });
+                event.stopPropagation();
+                return false; // or event.preventDefault();
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+
+
+    <%- include('../layouts/footer.ejs') %>

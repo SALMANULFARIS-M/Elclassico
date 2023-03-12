@@ -1,0 +1,116 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+
+        <!-- profile -->
+        <section style="background-color: #eee;">
+
+            <div class="container" style="padding-top: 10em;">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <img src="https://i.pinimg.com/originals/0a/f3/c9/0af3c9613761d2d2394d99312aeba397.gif"
+                                    alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                <h5 class="my-3">
+                                    <%=userData.name%>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <% if(userAddress){ %>
+                                    <form action="/updateaddress/?id=<%=userAddress._id%>" method="post">
+                                        <div class="col-sm-9  ">
+                                            <input type="text" placeholder="House name" name="name" class="w-50"
+                                                value="<%=userAddress.name%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50 " placeholder="Street" name="mobile"
+                                                value="<%=userAddress.mobile%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" placeholder="House name" name="home" class="w-50"
+                                                value="<%=userAddress.home%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50 " placeholder="Street" name="street"
+                                                value="<%=userAddress.street%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50" placeholder="City" name="city"
+                                                value="<%=userAddress.city%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50" placeholder="District" name="district"
+                                                value="<%=userAddress.district%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50" placeholder="State" name="state"
+                                                value="<%=userAddress.state%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="text" class="w-50" placeholder="Country" name="country"
+                                                value="<%=userAddress.country%>"
+                                                style="height: 40px;  border-width: 1px;"><br><br>
+                                            <input type="number" class="" placeholder="Pincode" name="zip"
+                                                value="<%=userAddress.zip%>" style="height: 40px;  border-width: 1px;">
+                                            <br>
+
+                                            <button class="btn btn-warning m-4" type="submit">Save</button></a>
+                                        </div>
+                                    </form>
+                                    <%}else {%>
+                                        <form action="/editprofile" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0">Full Name</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Your Name" name="name"
+                                                        value="<%=userData.name%>" class="w-50"
+                                                        style="height: 40px;  border-width: 1px;">
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0">Email</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Your Email" name="email"
+                                                        value="<%=userData.email%>" class="w-50"
+                                                        style="height: 40px;  border-width: 1px;">
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <p class="mb-0">Mobile</p>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <p class="text-muted mb-0">
+                                                        <%=userData.mobile%>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-warning m-4" type="submit">Save</button></a>
+                                        </form>
+                                        <%}%>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- End profile -->
+
+        <script>
+            const page = document.getElementById('my-account');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+        </script>
+
+        <%- include('../layouts/homefoot.ejs') %>

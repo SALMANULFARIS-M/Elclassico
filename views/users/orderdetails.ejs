@@ -1,0 +1,455 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+        <section style="background-color: #eee;" class="pb-5">
+
+            <div class="container px-1 px-md-4 py-5 mx-auto">
+                <div class="card">
+                    <div class="row d-flex justify-content-between px-3 top">
+                        <h5 class="text-center">ORDER <span class="text-primary font-weight-bold">
+                                <%=orderData._id%>
+                            </span></h5>
+                        <div class="col-md-6">
+
+
+                            <h5 class=" text-dark mt-2">Delivery Address </h5>
+                            <hr>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+                                <strong class="me-2">
+                                    <%=orderAddress.name%>
+                                </strong> <strong>
+                                    <%=orderAddress.mobile%>
+                                </strong>
+                                <br>
+                                <%=orderAddress.home%>,<%=orderAddress.street%>,
+                                        <%=orderAddress.city%>,<%=orderAddress.district%><br>
+                                                <%=orderAddress.state%>,
+                                                    <%=orderAddress.country%>,
+                                                        <%=orderAddress.zip%>.
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="col-md-5 d-flex justify-content-between mt-5 ">
+                            <div class="d-flex flex-column align-items-start text-sm-right ">
+                                <p class="mb-0">Order Date : <span class="font-weight-bold ms-5">
+                                        <%=orderData.date.slice(0,16)%>
+                                    </span>
+                                </p>
+                                <% const orderDate=new Date(orderData.date); orderDate.setDate(orderDate.getDate() + 5);
+                                    const expectDate=orderDate.toString().slice(0,16) %>
+                                    <p class="mb-0">Expected Arrival:<span class="font-weight-bold ms-3">
+                                            <%= expectDate %>
+                                        </span></p>
+                                    <p>Payment Method : <span class="font-weight-bold  ms-2">
+                                            <%=orderData.payment_method%>
+                                        </span></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Add class 'active' to progress -->
+
+                    <div class="row d-flex justify-content-center my-3">
+                        <div class="col-12">
+                            <ul id="progressbar" class="text-center">
+
+                                <% if(orderData.order_status=='PLACED' ){%>
+                                    <li class="active step0 "><img class="icon" src="https://i.imgur.com/9nnc9Et.png">
+                                        <p class="font-weight-bold">Order<br>Processed</p>
+                                    </li>
+                                    <li class="step0"><img class="icon" src="https://i.imgur.com/u1AzR7w.png">
+                                        <p class="font-weight-bold">Order<br>Shipped</p>
+                                    </li>
+                                    <li class=" step0"><img class="icon" src="https://i.imgur.com/TkPm63y.png">
+                                        <p class="font-weight-bold">Out for<br>Delivery</p>
+                                    </li>
+                                    <li class="step0"><img class="icon" src="https://i.imgur.com/HdsziHP.png">
+                                        <p class="font-weight-bold">Order<br>Delivered</p>
+                                    </li>
+                                    <% }else if(orderData.order_status=='SHIPPED' ){%>
+                                        <li class="active step0 "><img class="icon"
+                                                src="https://i.imgur.com/9nnc9Et.png">
+                                            <p class="font-weight-bold">Order<br>Processed</p>
+                                        </li>
+                                        <li class="active step0"><img class="icon"
+                                                src="https://i.imgur.com/u1AzR7w.png">
+                                            <p class="font-weight-bold">Order<br>Shipped</p>
+                                        </li>
+                                        <li class=" step0"><img class="icon" src="https://i.imgur.com/TkPm63y.png">
+                                            <p class="font-weight-bold">Out for<br>Delivery</p>
+                                        </li>
+                                        <li class="step0"><img class="icon" src="https://i.imgur.com/HdsziHP.png">
+                                            <p class="font-weight-bold">Order<br>Delivered</p>
+                                        </li>
+                                        <% }else if(orderData.order_status=='OUT FOR DELIVERY' ){%>
+                                            <li class="active step0 "><img class="icon"
+                                                    src="https://i.imgur.com/9nnc9Et.png">
+                                                <p class="font-weight-bold">Order<br>Processed</p>
+                                            </li>
+                                            <li class="active step0"><img class="icon"
+                                                    src="https://i.imgur.com/u1AzR7w.png">
+                                                <p class="font-weight-bold">Order<br>Shipped</p>
+                                            </li>
+                                            <li class="active step0"><img class="icon"
+                                                    src="https://i.imgur.com/TkPm63y.png">
+                                                <p class="font-weight-bold">Out for<br>Delivery</p>
+                                            </li>
+                                            <li class="step0"><img class="icon" src="https://i.imgur.com/HdsziHP.png">
+                                                <p class="font-weight-bold">Order<br>Delivered</p>
+                                            </li>
+                                            <% }else if(orderData.order_status=='DELIVERED' ){%>
+                                                <li class="active step0 "><img class="icon"
+                                                        src="https://i.imgur.com/9nnc9Et.png">
+                                                    <p class="font-weight-bold">Order<br>Processed</p>
+                                                </li>
+                                                <li class="active step0"><img class="icon"
+                                                        src="https://i.imgur.com/u1AzR7w.png">
+                                                    <p class="font-weight-bold">Order<br>Shipped</p>
+                                                </li>
+                                                <li class="active step0"><img class="icon"
+                                                        src="https://i.imgur.com/TkPm63y.png">
+                                                    <p class="font-weight-bold">Out for<br>Delivery</p>
+                                                </li>
+                                                <li class="active step0"><img class="icon"
+                                                        src="https://i.imgur.com/HdsziHP.png">
+                                                    <p class="font-weight-bold">Order<br>Delivered</p>
+                                                </li>
+                                                <% }else if(orderData.order_status=='CANCELLED' ){%>
+                                                    <li class="active step0"><img class="icon"
+                                                            src="https://i.imgur.com/9nnc9Et.png">
+                                                        <p class="font-weight-bold">Order<br>Processed</p>
+                                                    </li>
+                                                    <li class="cancel">
+                                                        <p class="font-weight-bold">
+                                                    </li>
+
+                                                    <li class="cancel bi bi-x-circle">
+                                                        <h1><i class="bi bi-x-octagon-fill fa-1x text-black"></i></h1>
+                                                        <p class="font-weight-bold">Order<br>Cancelled</p>
+                                                    </li>
+
+                                                    <style>
+                                                        #progressbar li.cancel:before {
+
+                                                            background: red;
+                                                            color: black;
+                                                            font-weight: bolder;
+
+                                                        }
+
+                                                        #progressbar li.cancel:after {
+                                                            background: red;
+
+                                                        }
+                                                    </style>
+                                                    <% }else if(orderData.order_status=='RETURNED' ){%>
+
+                                                        <li class="active step0 " style="width: 20%"><img class="icon"
+                                                                src="https://i.imgur.com/9nnc9Et.png">
+                                                            <p class="font-weight-bold">Order<br>Processed</p>
+                                                        </li>
+                                                        <li class="active step0" style="width: 20%" id="ship"><img
+                                                                class="icon" src="https://i.imgur.com/u1AzR7w.png">
+                                                            <p class="font-weight-bold">Order<br>Shipped</p>
+                                                        </li>
+                                                        <li class="track step0" style="width: 20%;"><img class="icon"
+                                                                src="https://i.imgur.com/TkPm63y.png">
+                                                            <p class="font-weight-bold">Out for<br>Delivery</p>
+                                                        </li>
+                                                        <li class="active " style="width: 20%; "><img class="icon"
+                                                                src="https://i.imgur.com/HdsziHP.png">
+                                                            <p class="font-weight-bold">Order<br>Delivered</p>
+                                                        </li>
+                                                        <li class="cancel bi bi-x-circle" style="width: 20%; "><img
+                                                                class="icon"
+                                                                src="https://static.thenounproject.com/png/3849238-200.png">
+                                                            <p class="font-weight-bold">Order<br>RETURNED</p>
+                                                        </li>
+                                                        <style>
+                                                            #progressbar li.cancel:before {
+
+                                                                background: red;
+                                                                color: black;
+                                                                font-weight: bolder;
+
+                                                            }
+
+                                                            #progressbar li.cancel:after {
+                                                                background: red;
+                                                                width: 50%;
+                                                            }
+
+                                                            #progressbar li.track:before {
+                                                                background: orange;
+                                                                color: blue;
+                                                                font-weight: bolder;
+                                                                content: "\f00c";
+                                                            }
+
+                                                            #progressbar li.track:after {
+                                                                background: orange;
+                                                                width: 150%;
+                                                            }
+                                                        </style>
+
+                                                        <%}%>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="order_details_table">
+                        <h2>Product Details</h2>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr>
+                                        <%for(let i=0;i<orderData.products.length;i++){%>
+                                            <td>
+                                                <img src="/productimg/<%=orderData.products[i].productId[0].image[0]%>"
+                                                    alt="" class="rounded-circle" height="50">
+                                            </td>
+                                            <td>
+                                                <p>
+                                                    <%=orderData.products[i].productId[0].name%>
+                                                </p>
+                                            </td>
+
+                                            <td>
+                                                <h5>x <%=orderData.products[i].quantity%>
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <p>&#x20B9;<%=orderData.products[i].price%>
+                                                </p>
+                                            </td>
+                                    </tr>
+                                    <%}%>
+
+
+                                        <tr>
+                                            <td></td>
+                                            <td>
+
+                                            </td>
+                                            <td>
+                                                <h4 class="fw-bold">Subtotal :</h4>
+                                            </td>
+                                            <td>
+                                                <p class="fw-bold">
+                                                    &#x20B9;<%=orderData.total_price%>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="/myorder"><button class="btn btn-warning ms-3" style="float: left;">Back to
+                                orders</button></a>
+
+                        <% if(orderData.order_status=='PLACED' || orderData.order_status=='SHIPPED' ){%>
+                            <button class="btn btn-danger me-3" style="float: right;" onclick="cancel()"
+                                type="submit">Cancel Order</button>
+                            <%}else if(orderData.order_status=='DELIVERED' ){%>
+                                <button class="btn btn-dark me-3" style="float: right;" onclick="ret()"
+                                    type="submit">Return Order</button>
+                                <%}%>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <style>
+            body {
+                color: #000;
+                overflow-x: hidden;
+                height: 100%;
+                background-color: #8C9EFF;
+                background-repeat: no-repeat;
+            }
+
+            .card {
+                z-index: 0;
+                background-color: #ECEFF1;
+                padding-bottom: 20px;
+                margin-top: 90px;
+                margin-bottom: 90px;
+                border-radius: 10px;
+            }
+
+            .top {
+                padding-top: 40px;
+                padding-left: 13% !important;
+                padding-right: 13% !important;
+            }
+
+            /*Icon progressbar*/
+            #progressbar {
+                margin-bottom: 30px;
+                overflow: hidden;
+                color: #455A64;
+                padding-left: 0px;
+                margin-top: 30px;
+            }
+
+            #progressbar li {
+                list-style-type: none;
+                font-size: 13px;
+                width: 25%;
+                float: left;
+                position: relative;
+                font-weight: 400;
+            }
+
+            #progressbar .step0:before {
+                font-family: FontAwesome;
+                content: "\f10c";
+                color: blue;
+
+            }
+
+
+            #progressbar li:before {
+                width: 40px;
+                height: 40px;
+                line-height: 45px;
+                display: block;
+                font-size: 20px;
+                background: #C5CAE9;
+                border-radius: 50%;
+                margin: auto;
+                padding: 0px;
+            }
+
+            /*ProgressBar connectors*/
+            #progressbar li:after {
+                content: '';
+                width: 100%;
+                height: 12px;
+                background: #C5CAE9;
+                position: absolute;
+                left: 0;
+                top: 16px;
+                z-index: -1;
+            }
+
+            #progressbar li:last-child:after {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                position: absolute;
+                left: -50%;
+            }
+
+            #progressbar li:nth-child(2):after,
+            #progressbar li:nth-child(3):after {
+                left: -50%;
+            }
+
+            #progressbar li:first-child:after {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                position: absolute;
+                left: 50%;
+            }
+
+            #progressbar li:last-child:after {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            #progressbar li:first-child:after {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            /*Color number of the step and the connector before it*/
+            #progressbar li.active:before {
+
+                background: orange;
+            }
+
+            #progressbar li.active:after {
+                background: orange;
+            }
+
+
+            #progressbar li.active:before {
+                font-family: FontAwesome;
+                content: "\f00c";
+            }
+
+            .icon {
+                width: 60px;
+                height: 60px;
+                margin-right: 15px;
+            }
+
+            .icon-content {
+                padding-bottom: 20px;
+            }
+
+            @media screen and (max-width: 992px) {
+                .icon-content {
+                    width: 50%;
+                }
+            }
+        </style>
+        <script>
+            function cancel() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are going to cancel your order!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, confirm!'
+                }).then((result) => {
+                    if (result.value) {
+                        window.location.href = '/cancelorder/?id=<%=orderData._id%>';
+                    }
+                })
+            }
+            function ret() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are going to return your order!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, confirm!'
+                }).then((result) => {
+                    if (result.value) {
+                        window.location.href = '/returnorder/?id=<%=orderData._id%>';
+                    }
+                })
+            }
+            const page = document.getElementById('my-account');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <%- include('../layouts/homefoot.ejs') %>

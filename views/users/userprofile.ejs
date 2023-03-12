@@ -1,0 +1,316 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+        <!-- profile -->
+        <section style="background-color: #eee;" class="p-2">
+
+            <div class="container" style="padding-top: 10em;">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <img src="https://i.pinimg.com/originals/0a/f3/c9/0af3c9613761d2d2394d99312aeba397.gif"
+                                    alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                <h5 class="my-3">
+                                    <%=userData.name%>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Full Name :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <%=userData.name%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <%=userData.email%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Mobile :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <%=userData.mobile%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Wallet :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-danger mb-0">
+                                            <% if(userData.wallet==0){%>
+                                                ₹0
+                                                <%}else{%>
+                                                    ₹<%=userData.wallet%>
+                                                        <%}%>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Password :</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted">
+                                            ●●●●●●●● <button class="btn btn-dark btn-sm" style="float: right;"
+                                                id="changepassword">Change Password</button>
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <a href="/editprofile"> <button class="btn btn-warning"
+                                        style="float: right;">Edit</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="billing_details">
+                    <h2>Manage Address</h2>
+                    <hr style="border: solid;">
+                    <div class="alert bg-white d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill" />
+                        </svg>
+                        <div class="p-2">
+                            <a href="/saveaddress" class="fs-5"><i class="bi bi-plus-square-dotted me-3"></i> ADD NEW
+                                ADDRESS </a>
+                        </div>
+                    </div>
+                    <% if( userData.address){ %>
+                        <% for(let i=0;i<userData.address.length;i++){ %>
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <div class="btn-group" style="float: right;">
+                                    <button class="btn " type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-lg text-dark "></i>
+                                    </button>
+                                    <ul class="dropdown-menu bg-secondaary" aria-labelledby="dropdownMenuButton">
+
+                                        <li><a class="dropdown-item"
+                                                href="/editprofile/?id=<%=userData.address[i]._id%>"><i
+                                                    class="bi bi-pencil-square me-2"></i>Edit</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="/deleteaddress/?id=<%=userData.address[i]._id%>"><i
+                                                    class="bi bi-file-x-fill me-2"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                                <strong class="me-2">
+                                    <%=userData.address[i].name%>
+                                </strong> <strong>
+                                    <%=userData.address[i].mobile%>
+                                </strong>
+                                <br>
+                                <%=userData.address[i].home%>,<%=userData.address[i].street%>,
+                                        <%=userData.address[i].city%>,<%=userData.address[i].district%><br>
+                                                <%=userData.address[i].state%>,
+                                                    <%=userData.address[i].country%>,
+                                                        <%=userData.address[i].zip%>.
+                            </div>
+                            <%}%>
+                                <%}%>
+
+
+                </div>
+            </div>
+            </div>
+        </section>
+        <!-- End profile -->
+
+
+        <!-- Modal -->
+        <div id="modal" class="modal" style="display: none; backdrop-filter:blur(10px);">
+            <div class="modal-content ">
+                <form id="psw-change">
+                    <div class="row mt-3">
+                        <b class="ml-4">Change Your Password</b>
+                        <div class="col-md-12 ">
+                            <label class="labels"></label>
+                            <input type="password" name="oldpsw" id="oldpsw" class="form-control" required
+                                placeholder="Current Password" value="">
+                        </div>
+                        <div class="alert alert-danger mt-2 ms-3 col-md-11" role="alert" id="alert-psw"
+                            style="display: none;">
+
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels"></label>
+                            <input type="password" name="newpsw" id="newpsw" class="form-control" required
+                                placeholder="New Password" value="">
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-warning profile-button" type="submit"
+                            onclick="changePassword()">save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <style>
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 10% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 90%;
+                max-width: 500px;
+            }
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .modal-header h2 {
+                margin: 0;
+            }
+
+            .close {
+                font-size: 24px;
+                font-weight: bold;
+                color: #aaa;
+                text-align: center;
+                cursor: pointer;
+                border: none;
+                background: none;
+            }
+
+            .close:focus,
+            .close:hover {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            @media screen and (max-width: 768px) {
+                .modal-content {
+                    width: 90%;
+                    margin: 20% auto;
+                }
+            }
+        </style>
+
+
+        <script>
+            var modal = document.getElementById("modal");
+            var changepassword = document.getElementById("changepassword");
+
+            changepassword.addEventListener("click", function (e) {
+                e.preventDefault();
+                modal.style.display = "block";
+            });
+
+            // To hide the modal when the user clicks outside of it
+            window.addEventListener("click", function (e) {
+                if (e.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            function changePassword() {
+                event.preventDefault()
+                const oldpsw = document.getElementById('oldpsw').value
+                const newpsw = document.getElementById('newpsw').value
+
+                if (newpsw.length >= 6) {
+                    $.ajax({
+                        url: `/changepassword`,
+                        method: "post",
+                        data: {
+                            oldpsw,
+                            newpsw
+                        },
+                        success: (response => {
+
+
+                            if (response.success == true) {
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top',
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: "Password changed successfully"
+                                })
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000)
+
+                            } else {
+                                const alertPsw = document.getElementById('alert-psw');
+                                alertPsw.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-3"></i>Current password is incorrect!';
+                                alertPsw.style.display = "block"
+                                setTimeout(() => {
+                                    alertPsw.style.display = "none"
+                                }, 3000)
+                            }
+                        })
+                    })
+                } else {
+
+                    const alertPsw = document.getElementById('alert-psw');
+                    console.log(alertPsw);
+                    alertPsw.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-3"></i>Minimum six letters required for password!';
+                    alertPsw.style.display = "block"
+                    setTimeout(() => {
+                        alertPsw.style.display = "none"
+                    }, 3000)
+                }
+
+            }
+
+            const page = document.getElementById('my-account');
+            page.classList.remove('text-light');
+            page.classList.add('text-warning');
+
+        </script>
+
+        <%- include('../layouts/homefoot.ejs') %>

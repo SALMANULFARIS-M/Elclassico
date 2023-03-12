@@ -1,0 +1,341 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+    <div class="left">
+        <ul class="breadcrumb">
+
+            <li><i class='bx bx-chevron-right fs-3'></i></li>
+            <li>
+                <a class="active fs-5" href="/admin/sales">SALES</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Table -->
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Sales</h4>
+                <form >
+                    <div id="range"></div>
+                    <div class="">
+                        <div class="d-flex float-left" style="display: inline-block;">
+                            <label>
+                                <input id="start" style="width: 100px; border-radius: 5px;" mbsc-input
+                                    placeholder="Start date" />
+                            </label>
+                            <label>
+                                <input id="end" style="width: 100px; border-radius: 5px;" mbsc-input
+                                    placeholder="End date" />
+                            </label>
+
+                            <!-- Google -->
+                            <button type="button" class="btn btn-danger btn-floating ms-2" onclick="dateFilter()"
+                                style="margin-top: 17px;height: 30px;">
+                                <i class="fas fa-magic"></i>
+                            </button>
+                        </div>
+                         <div class="btn-group flex-column float-right">
+                        <P class="me-5">Total Amount:<span class="text-danger" > <i class="bi bi-currency-rupee"></i>
+                            <strong id="total"><%=totalAmount%></strong>
+                        </span></P>
+                        <button class="w-25 ms-5 btn btn-primary btn-floating" type="button" id="dropdownMenuButton" style="border-radius: 5px;"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                            <li><a class="dropdown-item" onclick="pdf()" href=""><i
+                                        class="bi bi-file-pdf-fill me-2"></i>PDF</a></li>
+                            <li><a class="dropdown-item" onclick="excel()" href=""><i
+                                        class="bi bi-file-earmark-spreadsheet me-2"></i>Excel</a></li>
+                        </ul>
+                    </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Products</th>
+                                <th>total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <% if(orderData.length>0){%>
+                                <%for(let i=0;i<orderData.length;i++){%>
+                                    <tr>
+                                        <td class="text-light">
+                                            <%=[i+1] %>
+                                        </td>
+                                        <td class="text-success">
+                                            <%=orderData[i].date.toString().slice(0,10)%>
+                                        </td>
+                                        <td class="text-light">
+                                            <%=orderData[i].userId.name%>
+                                        </td>
+                                        <td class="text-light">
+                                            <%for(let j=0;j<orderData[i].products.length;j++){%>
+                                                <%=orderData[i].products[j].quantity%> <span class="me-2">x </span>
+                                                    <%=orderData[i].products[j].productId[0].name%>
+                                                        <br>
+                                                        <%}%>
+                                        </td>
+                                        <td class="text-danger">
+                                            <i class="bi bi-currency-rupee me-1"></i>
+                                            <%=orderData[i].total_price%>
+                                        </td>
+                                    </tr>
+                                    <% } } else{ %>
+                                        <tr>
+                                            <td colspan="5">No sales have now....</td>
+                                        </tr>
+                                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+
+
+    <style>
+        #myTable {
+            border-collapse: collapse;
+            /* Collapse borders */
+            width: 100%;
+            /* Full-width */
+            border: 1px solid #ddd;
+            /* Add a grey border */
+            font-size: 18px;
+            /* Increase font-size */
+        }
+
+        #myTable th,
+        #myTable td {
+            text-align: left;
+            /* Left-align text */
+            padding: 12px;
+            /* Add padding */
+        }
+
+        #myTable tr {
+            /* Add a bottom border to all table rows */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sweet-alert {
+            background: transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        .sweet-alert button.cancel {
+            color: black;
+        }
+
+        .sweet-alert h2 {
+            color: antiquewhite;
+        }
+
+        .sweet-alert p {
+            color: antiquewhite;
+        }
+    </style>
+
+
+    <script>
+
+
+
+        function dateFilter() {
+            event.preventDefault();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            const startDate = document.getElementById('start').value
+            const endDate = document.getElementById('end').value
+
+            if (!startDate) {
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a start Date"
+                })
+            } else if (!endDate) {
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a end Date"
+                })
+            } else {
+                console.log("hey");
+                $.ajax({
+                    url: '/admin/sales',
+                    method: 'post',
+                    data: { startDate, endDate },
+                    success: function (response) {
+                        const tableBody = document.getElementById('tableBody');
+                        let html = "";
+                        let rowNum = 1;
+                        if (response.orderData.length > 0) {
+                            document.getElementById('total').textContent = response.totalAmount
+
+                            response.orderData.forEach((order) => {
+                                html += `<tr>
+                            <td class="text-light">${rowNum++}</td>
+                            <td class="text-success">${order.date.toString().slice(0, 10)}</td>
+                            <td class="text-light">${order.userId.name}</td>
+                            <td class="text-light"> ${order.products.map(product => product.quantity + "<span class='me-2'>x</span>" + product.productId[0].name + '<br>')}</td>
+                            <td class="text-danger"><i class="bi bi-currency-rupee me-1"></i>${order.total_price}</td>
+                         </tr>`;
+                            });
+                        } else {
+                            html = `<tr><td colspan="7">No sales data found for selected date range</td></tr>`;
+                        }
+
+                        tableBody.innerHTML = html;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("An error occurred while fetching sales data: ", error);
+                    }
+                });
+            }
+
+
+        }
+
+        function pdf() {
+            event.preventDefault();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            const startDate = document.getElementById('start').value
+            const endDate = document.getElementById('end').value
+            if (!startDate) {
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a start Date"
+                })
+            } else if (!endDate) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a end Date"
+                })
+            } else {
+                $.ajax({
+                    url: "/admin/pdfdown",
+                    method: "get",
+                    data: { startDate, endDate },
+                    xhrFields: {
+                        responseType: "blob",
+                    },
+                    success: function (response) {
+
+                        const url = window.URL.createObjectURL(response);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "salesreport.pdf";
+
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    },
+                });
+            }
+
+
+        }
+
+
+
+        function excel() {
+            event.preventDefault();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            const startDate = document.getElementById('start').value
+            const endDate = document.getElementById('end').value
+            if (!startDate) {
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a start Date"
+                })
+            } else if (!endDate) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Select a end Date"
+                })
+            } else {
+                $.ajax({
+                    url: "/admin/exceldown",
+                    method: "get",
+                    data: { startDate, endDate },
+                    xhrFields: {
+                        responseType: "blob",
+                    },
+                    success: function (response) {
+
+                        const url = window.URL.createObjectURL(response);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "salesreport.xlsx";
+
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    },
+                });
+            }
+        }
+
+        mobiscroll.datepicker('#range', {
+            select: 'range',
+            startInput: '#start',
+            endInput: '#end'
+        });
+    </script>
+
+
+
+
+
+    <%- include('../admin/footer.ejs')%>

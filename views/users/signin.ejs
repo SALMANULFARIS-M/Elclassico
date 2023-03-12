@@ -1,0 +1,173 @@
+<%- include('../layouts/header.ejs') %>
+
+    <!-- Sign in  Form -->
+    <div class="mains vh-100">
+        <section class="sign-in mt-5">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="images/messi-and-ronaldo.webp" alt="sing up image"></figure>
+                        <a href="/signup" class="signup-image-link fw-bold">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Log In</h2>
+                        <form class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="number" name="mobile" id="mobile" onkeyup="mobileCheck()"
+                                    placeholder="Your Phone Number" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="psw" id="psw" placeholder="Password" required
+                                    onkeyup="passwordCheck()" />
+                            </div>
+                            <div class="form-group">
+                                <p>
+                                    <b><a href="/forget_password" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            style="text-decoration: none; float: right ;">Forget
+                                            Password</a></b>
+                                </p>
+                            </div>
+
+                            <%if(typeof message !=='undefined' ){ %>
+                                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+                                    <div class="mx-2">
+                                        <%= message%>
+                                    </div>
+                                </div>
+
+                                <% } %>
+
+                                    <div class="form-group form-button">
+                                        <button class="btn btn-warning" type="" onclick="signIn()">Log in</button>
+                                        <a href="/mobileotp" class="btn btn-outline-warning text-black d-flex mt-2"
+                                            style="float: right;">Login with OTP</a>
+                                    </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- password reset modal -->
+    <div class="container">
+        <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+            <div class="modal-dialog mt-5" style="width: 50rem;">
+                <div class="modal-content text-center">
+                    <div class="modal-header text-white bg-primary justify-content-center">
+                        Password Reset
+                    </div>
+                    <div class="modal-body ">
+                        <p class="py-2 ">
+                            Enter your email address and we'll send you an email.Click the link to reset your password.
+                        </p>
+
+
+                        <form action="/forget_password" method="post" class="pt-4 bg-white"
+                            style="width: 80%; border-radius: 0em; border-width: 0.1em; border-color: rgb(199, 196, 196); border-style: solid; margin: 0 auto;">
+
+                            <div class="position-relative mt-3 form-input d-flex justify-content-center ">
+                                <input class="form-control" style="width: 15em;" type="text" name="email"
+                                    autocomplete="off" required>
+                                <!-- <i class='bx bxs-phone'></i> -->
+                            </div>
+
+
+                            <div class=" mt-3 d-flex align-items-center justify-content-center mt-2">
+                                <button type="submit" class="btn btn-warning">Send Link</button>
+                            </div>
+                            <div class=" mt-5 d-flex align-items-center">
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-between mt-4">
+                            <a style="text-decoration: none;color: black;" class="fw-bold" href="/signin">Login</a>
+                            <a style="text-decoration: none;color: black;" class="fw-bold" href="signup">Register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @media only screen and (max-width: 576px) {
+                .modal-dialog {
+                    max-width: 90vw;
+                    margin: 1.75rem auto;
+                }
+            }
+
+            @media only screen and (min-width: 576px) {
+                .modal-dialog {
+                    max-width: 25rem;
+                    margin: 5rem auto;
+                }
+            }
+
+            @media only screen and (min-width: 768px) {
+                .modal-dialog {
+                    max-width: 35rem;
+                    margin: 7.5rem auto;
+                }
+            }
+
+            @media only screen and (min-width: 992px) {
+                .modal-dialog {
+                    max-width: 50rem;
+                    margin: 10rem auto;
+                }
+            }
+        </style>
+
+
+        <script>
+
+            $(document).ready(function () {
+                $('#login-form').submit(function (event) {
+                    event.preventDefault();
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    $.ajax({
+                        url: '/signin',
+                        method: "post",
+                        data: $("#login-form").serialize(),
+                        success: function (response) {
+                            if (response.success == true) {
+                                location.href = "/"
+
+                            } else if (response.message) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.message
+                                })
+                            } else {
+                                Toast.fire({
+                                    icon: 'warning',
+                                    title: 'Sorry,something goes wrong'
+                                })
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000)
+
+                            }
+
+                        }
+
+                    })
+                })
+            })
+        </script>
+
+        <%- include('../layouts/footer.ejs') %>

@@ -1,0 +1,133 @@
+<%- include('../layouts/homehead.ejs') %>
+
+    <%- include('../layouts/homenav.ejs') %>
+
+
+
+        <!--================Order Details Area =================-->
+        <section class="order_details section_gap mt-5">
+            <div class="container">
+                <a class="btn btn-primary text-light" href="/myorder" style="float: right;">Go to orders</a>
+                <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
+                <div class="row order_d_inner">
+                    <div class="col-lg-4">
+                        <div class="details_item">
+                            <h4>Order Info</h4>
+                            <ul class="list">
+                                <li><a href="#" class="d-flex"><span>Order ID</span>
+                                        <p>:<%=orderData._id%>
+                                        </p>
+                                    </a></li>
+                                <li><a href="#"><span>Date</span> : <%=orderData.date.slice(0,10)%></a></li>
+                                <li><a href="#"><span>customer Name</span> : <%=orderAddress.name%></a></li>
+                                <li><a href="#"><span>Payment method</span> : <%=orderData.payment_method%></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details_item">
+                            <h4>Billing Address</h4>
+                            <ul class="list">
+                                <li><a href="#"><span>Mobile </span> : <%=orderAddress.mobile%></a></li>
+                                <li><a href="#"><span>Home</span> : <%=orderAddress.home%></a></li>
+                                <li><a href="#"><span>Street</span> : <%=orderAddress.street%></a></li>
+                                <li><a href="#"><span>City</span> : <%=orderAddress.city%></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="details_item mt-5">
+                            <ul class="list">
+                                <li><a href="#"><span>District </span> : <%=orderAddress.district%></a></li>
+                                <li><a href="#"><span>State</span> : <%=orderAddress.state%></a></li>
+                                <li><a href="#"><span>Country</span> : <%=orderAddress.country%></a></li>
+                                <li><a href="#"><span>Pincode </span> : <%=orderAddress.zip%></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="order_details_table">
+                    <h2>Order Details</h2>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <%for(let i=0;i<orderData.products.length;i++){%>
+                                        <td>
+                                            <p>
+                                                <%=orderData.products[i].productId[0].name%>
+                                            </p>
+                                        </td>
+
+                                        <td>
+                                            <h5>x <%=products[i].quantity%>
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <p>&#x20B9;<%=products[i].price%>
+                                            </p>
+                                        </td>
+                                </tr>
+                                <%}%>
+                                    <tr>
+                                        <td>
+                                            <h4>Subtotal</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <%=orderData.total_price%>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h4>Shipping</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p>Free Delivery</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h4>Total</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <%=orderData.total_price%>
+                                            </p>
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================End Order Details Area =================-->
+
+
+
+
+
+
+
+
+
+
+        <%- include('../layouts/homefoot.ejs') %>

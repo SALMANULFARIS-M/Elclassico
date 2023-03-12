@@ -1,0 +1,111 @@
+<%- include('../admin/sidenav-topnav.ejs')%>
+
+<div class="left">
+    <ul class="breadcrumb">
+
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+            <a class="active fs-5" href="/admin/banner">BANNER</a>
+        </li>
+        <li><i class='bx bx-chevron-right fs-3'></i></li>
+        <li>
+            <a class="active fs-5" href="">Add Banner</a>
+        </li>
+    </ul>
+</div>
+
+
+
+
+
+ <!-- table -->
+ <form action="/admin/addbanner" method="post" enctype="multipart/form-data">
+    <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Add New Product</h4>
+                <%if(typeof message !=='undefined' ){ %>
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true" class="mx-3"></i>
+                        <div class="mx-2">
+                            <%= message%>
+                        </div>
+                    </div>
+                    <% } %>
+                <div class="form-group">
+                    <div class="input-group">
+                        <h4 class="mt-2 mx-4">1 : </h4>
+                        <input type="text" class="form-control text-light " placeholder="Title"
+                            name="title" aria-label="Username" aria-describedby="basic-addon1">
+                            
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <h4 class="mt-2 mx-4">2 : </h4>
+                        <div class="input-group-append w-75">
+                            <textarea type="text" class="form-control text-light"
+                                aria-label="Amount (to the nearest dollar)" maxlength="120" placeholder="Description"
+                                name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-group">
+                        <h4 class="m-4">3 : </h4>
+                        <div class="input-group-append mb-3">
+                            <div class="custom-file">
+                                <label class="form-label text-white " for="customFile" >Choose a image for Banner</label>
+                                <input type="file" class="form-control ps-3" name="image" id="customFile"  required accept=".webp,.jpg, .jpeg, .png" data-parsley-trigger="change"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="form-group">  
+                    <div class="d-flex  justify-content-end w-50 mt-5"><button type="submit" class="btn btn-success">submit</button></div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+</div>
+</div>
+</div>
+
+
+
+<script>
+     const input = document.querySelector('input[type="file"]');
+
+input.addEventListener('change', () => {
+  const file = input.files[0];
+
+  // Check if the file is an acceptable image type
+  if (!file.type.includes('image/')) {
+    alert('Invalid file type. Please select an image file.');
+    input.value = ''; // Clear the file input to allow the user to select a new file
+  }
+
+  // Check if the file size is too large
+  if (file.size > 10 * 1024 * 1024) {
+    alert('File size must be less than 10 MB.');
+    input.value = '';
+  }
+
+  // Use the FileReader API to read the contents of the file
+  const reader = new FileReader();
+
+  reader.addEventListener('load', () => {
+    // Do something with the file contents, like displaying a preview
+  });
+
+  reader.readAsDataURL(file);
+});
+
+</script>
+
+<%- include('../admin/footer.ejs')%>

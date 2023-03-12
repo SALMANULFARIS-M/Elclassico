@@ -1,0 +1,145 @@
+<%- include('../layouts/header.ejs') %>
+
+  <div class="container-fluid vh-100 d-flex justify-content-center align-items-center"
+    style="background-image: url('/images/background.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <div class="card py-4 px-4" style="background: transparent; backdrop-filter: blur(5px);">
+      <div class="text-center">
+        <img src="/images/football-2.jpg" width="60" class="rounded-circle">
+      </div>
+      <div class="text-center mt-3">
+
+        <span class="info-text text-white fs-6 ">Please enter your mobile number</span>
+      </div>
+
+      <form action="/mobileotp" method="post">
+        <div class="position-relative mt-3 form-input">
+          <input class="form-control" type="number" name="mobile" autocomplete="off">
+          <i class='bx bxs-phone'></i>
+        </div>
+        <%if(typeof message !=='undefined' ){ %>
+          <div class="alert alert-danger d-flex align-items-center mt-3" role="alert" style="height: 2rem;">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="5" role="img" aria-label="Danger:">
+              <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div class="fw-bold">
+              <%= message%>
+            </div>
+          </div>
+          <% } %>
+            <div class=" mt-5 d-flex align-items-center">
+
+              <a href="/signin" class="back-button" style="text-decoration: none;"> <i
+                  class='bx bxs-left-arrow-alt justify-content-center d-flex '></i></a>
+              <span class="text-black fw-bold mx-2 me-5">Back</span>
+              <button class="learn-more">
+                <span class="circle" aria-hidden="true">
+                  <span class="icon arrow"></span>
+                </span>
+                <span class="button-text">Get OTP</span>
+              </button>
+            </div>
+
+            <div class=" mt-5 d-flex align-items-center">
+
+            </div>
+      </form>
+    </div>
+
+
+    <style>
+      button {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        outline: none;
+        border: 0;
+        vertical-align: middle;
+        text-decoration: none;
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+        font-family: inherit;
+      }
+
+      button.learn-more {
+        width: 12rem;
+        height: auto;
+      }
+
+      button.learn-more .circle {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: relative;
+        display: block;
+        margin: 0;
+        width: 3rem;
+        height: 3rem;
+        background: #0f1678;
+        border-radius: 1.625rem;
+      }
+
+      button.learn-more .circle .icon {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: #fff;
+      }
+
+      button.learn-more .circle .icon.arrow {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        left: 0.625rem;
+        width: 1.125rem;
+        height: 0.125rem;
+        background: none;
+      }
+
+      button.learn-more .circle .icon.arrow::before {
+        position: absolute;
+        content: "";
+        top: -0.29rem;
+        right: 0.0625rem;
+        width: 0.625rem;
+        height: 0.625rem;
+        border-top: 0.125rem solid #fff;
+        border-right: 0.125rem solid #fff;
+        transform: rotate(45deg);
+      }
+
+      button.learn-more .button-text {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.75rem 0;
+        margin: 0 0 0 1.85rem;
+        color: #0f1678;
+        font-weight: 700;
+        line-height: 1.6;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      button:hover .circle {
+        width: 100%;
+      }
+
+      button:hover .circle .icon.arrow {
+        background: #fff;
+        transform: translate(1rem, 0);
+      }
+
+      button:hover .button-text {
+        color: #fff;
+      }
+
+
+      .height-100 {
+        height: 100vh
+      }
+    </style>
+
+
+    <%- include('../layouts/footer.ejs') %>

@@ -1,0 +1,55 @@
+
+<div class="d-flex">
+    <h3><%=startDate%> to  <%=endDate%></h3>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover" id="myTable">
+        <thead>
+            <tr>
+                <th>index</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Products</th>
+                <th>total</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <% if(orderData.length>0){%>
+                <%for(let i=0;i<orderData.length;i++){%>
+                    <tr>
+                        <td class="text-light">
+                            <%=[i+1] %>
+                        </td>
+                        <td class="text-success">
+                            <%=orderData[i].date.toString().slice(0,10)%>
+                        </td>
+                        <td class="text-light">
+                            <%=orderData[i].userId.name%>
+                        </td>
+                        <td class="text-light">
+                            <%for(let j=0;j<orderData[i].products.length;j++){%>
+                                <%=orderData[i].products[j].quantity%> <span class="me-2">x </span>
+                                    <%=orderData[i].products[j].productId[0].name%>
+                                        <br>
+                                        <%}%>
+                        </td>
+                        <td class="text-danger">
+                            <i class="bi bi-currency-rupee me-1"></i>
+                            <%=orderData[i].total_price%>
+                        </td>
+                    </tr>
+                    <% } } else{ %>
+                        <tr>
+                            <td colspan="5">No sales have now....</td>
+                        </tr>
+                        <% } %>
+        </tbody>
+    </table>
+</div>
+<div style="float: right;">
+<h3 style="float: right;">Total Amount:<span class="text-danger" id="total"> <i
+    class="bi bi-currency-rupee me-1"></i>
+<%=total%>
+</span></h3>
+</div>

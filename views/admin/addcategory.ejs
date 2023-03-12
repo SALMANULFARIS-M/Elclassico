@@ -1,0 +1,231 @@
+ <%-include('../admin/sidenav-topnav.ejs')%>
+
+<div class="left">
+  <ul class="breadcrumb">
+    <li><i class="bx bx-chevron-right fs-3"></i></li>
+    <li>
+      <a class="active fs-5" href="/admin/category">CATEGORY</a>
+    </li>
+    <li><i class="bx bx-chevron-right fs-3"></i></li>
+    <li>
+      <a class="active fs-5" href="/admin/addcategory">Add Category</a>
+    </li>
+  </ul>
+</div>
+<!-- table -->
+
+<form action="/admin/addcategory" method="post" enctype="multipart/form-data">
+  <div class="col-md-12 col-sm-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Add New Category</h4>
+        <% if (typeof message !=='undefined' ) { %>
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+          <i
+            class="fa fa-exclamation-circle"
+            aria-hidden="true"
+            class="mx-3"
+          ></i>
+          <div class="mx-2"><%= message %></div>
+        </div>
+        <% } %>
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Category Name"
+              name="category"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-append">
+              <div class="custom-file">
+                <label class="form-label" for="customFile"
+                  >Choose a image for Category</label
+                >
+                <input
+                  type="file"
+                  class="form-control ps-3"
+                  name="Image"
+                  id="customFile"
+                  accept=".webp, .jpg, .jpeg, .png"
+                  data-parsley-trigger="change"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cropModalLabel">Crop Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body w-75" >
+        <img id="cropperImage" src="#" alt="Image preview" width="100">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveCroppedImage">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <div class="mt-5">
+            <img id="image"  width="100">
+        </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-5">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<script>
+// Initialize the cropper
+var cropper;
+
+document.getElementById('customFile').addEventListener('change', function(event) {
+  var input = event.target;
+  var reader = new FileReader();
+  reader.onload = function() {
+    var dataURL = reader.result;
+    var output = document.getElementById('image');
+    output.src = dataURL;
+    // Replace the image in the cropper
+    if (cropper) {
+      cropper.replace(dataURL);
+    } else {
+      // Initialize the cropper inside the modal when the "Crop" button is clicked
+      document.getElementById('cropperImage').src = dataURL;
+      $('#cropModal').on('shown.bs.modal', function () {
+        cropper = new Cropper(document.getElementById('cropperImage'), {
+          aspectRatio: 1, // Set the aspect ratio to 1:1
+          viewMode: 1, // Set the view mode to "crop box"
+        });
+      });
+    }
+    // Show the modal
+    $('#cropModal').modal('show');
+  };
+  reader.readAsDataURL(input.files[0]);
+});
+
+// Add an event listener to the save button to handle the upload process
+document.getElementById('saveCroppedImage').addEventListener('click', function() {
+  if (!cropper) {
+    return;
+  }
+  // Retrieve the cropped image data from the cropper
+  var croppedImageData = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+
+  // Change the input file to the cropped image
+  var input = document.getElementById('customFile');
+  var file = dataURItoBlob(croppedImageData);
+  var fileName = 'croppedImage.jpg';
+  var newFile = new File([file], fileName, { type: file.type });
+  input.files = [newFile];
+
+  // Hide the modal
+  $('#cropModal').modal('hide');
+});
+
+
+// Helper function to convert base64 data URI to a Blob object
+function dataURItoBlob(dataURI) {
+  var byteString = atob(dataURI.split(',')[1]);
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], {type: mimeString});
+}
+
+
+document.getElementById('saveCroppedImage').addEventListener('click', function() {
+  if (!cropper) {
+    return;
+  }
+
+  // Retrieve the cropped image data from the cropper
+  var croppedImageData = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+
+  // Create a new Blob object from the cropped image data
+  var croppedImageBlob = dataURItoBlob(croppedImageData);
+
+  // Create a new File object from the cropped image blob with the original filename
+  var croppedImageFile = new File([croppedImageBlob], document.getElementById('customFile').files[0].name, { type: 'image/jpeg' });
+
+// Helper function to create a new FileList object
+function FileListItem(a) {
+  a = [].slice.call(Array.isArray(a) ? a : arguments)
+  for (var c, b = c = a.length, d = !0; b-- && d;) d = a[b] instanceof File
+  if (!d) throw new TypeError("expected argument to FileList is File or array of File objects")
+  for (b = (new ClipboardEvent("")).clipboardData || new DataTransfer; c--;) b.items.add(a[c])
+  return b.files
+}
+
+  // Replace the value of the customFile input with the new cropped image file
+  document.getElementById('customFile').value = '';
+  var input = document.getElementById('customFile');
+  input.files = new FileListItem([croppedImageFile]);
+  // Hide the modal
+  $('#cropModal').modal('hide');
+});
+
+</script>
+
+<script>
+  const input = document.getElementById("customFile");
+
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+
+    // Check if the file is an acceptable image type
+    if (!file.type.includes("image/")) {
+      alert("Invalid file type. Please select an image file.");
+      input.value = ""; // Clear the file input to allow the user to select a new file
+      return;
+    }
+
+    // Check if the file size is too large
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10 MB.");
+      input.value = "";
+      return;
+    }
+
+    // Use the FileReader API to read the contents of the file
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      image.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
+  });
+
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
+
+
+
+<%- include('../admin/footer.ejs')%>
