@@ -100,7 +100,7 @@
                     <section class="lattest-product-area pb-40 category-list">
                         <div class="row" id="sortArea">
                             <!-- single product -->
-
+<%if (product){ %>
                             <% for(let i=0;i<product.length;i++){ %>
                                 <div class="col-lg-4 col-md-6 my-5">
                                     <div class="single-product" style="position: relative;">
@@ -178,7 +178,9 @@
                                     </div>
                                 </div>
                                 <% } %>
-
+                                <% }else{ %>
+                                    No Products are found
+                                    <% } %>
 
                         </div>
                     </section>
@@ -186,7 +188,6 @@
                 </div>
             </div>
         </div>
-
 
         <script>
 
@@ -290,11 +291,7 @@
 
 
                     }
-
-
                 })
-
-
             }
 
             const page = document.getElementById('shop');
