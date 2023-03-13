@@ -72,7 +72,7 @@ app.use(function (err, req, res, next) {
   if (req.accepts("html")) {
     res.render("500", { error: err });
     return;
-  } 
+  }
 });
 
 //create server
