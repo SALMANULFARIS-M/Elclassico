@@ -10,8 +10,6 @@ var crypto = require("crypto");
 
 let userData;
 let cartData;
-let cartCount;
-let wishCount;
 let wishlist;
 let orderData;
 
@@ -25,6 +23,8 @@ let instance = new Razorpay({
 
 const loadCheckout = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id }).populate(
       "products.productId"
@@ -110,7 +110,7 @@ const saveOrder = async (req, res, next) => {
           applied_coupon: coupon,
         });
 
-         await order.save();
+        await order.save();
         res.json({ success: "COD" });
       } else if (payment_method == "Razorpay") {
         const order = await new Order({
@@ -205,6 +205,8 @@ const paymentVerify = async (req, res, next) => {
 
 const orderConfirm = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     if (req.headers.referer && req.headers.referer.endsWith("/checkout")) {
       orderData = await Order.findOne({ userId: req.session.userId })
         .sort({ createdAt: -1 })
@@ -275,6 +277,8 @@ const orderConfirm = async (req, res, next) => {
 
 const myOrder = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });

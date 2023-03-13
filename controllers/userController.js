@@ -16,15 +16,14 @@ const serviceSid = process.env.TWILIO_AUTH_SID;
 const client = require("twilio")(accountSid, authToken);
 
 let userData;
-let cartCount;
-let wishCount;
 let cartData;
 let wishlist;
 
 //load home page with checking user in session or not
 const loadHome = async (req, res, next) => {
   try {
-
+    let cartCount;
+    let wishCount;
     const productData = await Product.find({
       active: true,
     }).populate("category");
@@ -105,6 +104,8 @@ const loadHome = async (req, res, next) => {
 
 const contact = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     if (req.session.userId) {
       userData = await User.findById({ _id: req.session.userId });
       cartData = await Cart.findOne({ userId: userData._id });
@@ -490,6 +491,8 @@ const userProfile = async (req, res, next) => {
 
 const addAddress = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });

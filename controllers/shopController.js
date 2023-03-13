@@ -8,13 +8,13 @@ let userData;
 let productData;
 let cartData;
 let wishlist;
-let cartCount;
-let wishCount;
 let message;
 const limit = 6;
 
 const viewProduct = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     if (req.session.userId) {
       const id = req.query.id;
       const product = await Product.findById({
@@ -84,6 +84,8 @@ const viewProduct = async (req, res, next) => {
 
 const loadShop = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     let page = 1;
     if (req.query.page) {
       page = req.query.page;
@@ -104,72 +106,72 @@ const loadShop = async (req, res, next) => {
     if (req.session.userId) {
       userData = await User.findById({ _id: req.session.userId });
 
-        userData = await User.findById({ _id: req.session.userId });
-        wishlist = await Wishlist.findOne({ userId: userData._id });
-        cartData = await Cart.findOne({ userId: userData._id });
-        if (cartData && wishlist) {
-          cartCount = cartData.products.length;
-          wishCount = wishlist.products.length;
-          wishlist = wishlist.products;
-          res.render("shop", {
-            userData,
-            product: productData,
-            category: categories,
-            cartCount,
-            wishCount,
-            wishlist,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page,
-          });
-        } else if (cartData === null && wishlist) {
-          wishCount = wishlist.products.length;
-          wishlist = wishlist.products;
-          res.render("shop", {
-            userData,
-            product: productData,
-            category: categories,
-            cartCount,
-            wishCount,
-            wishlist,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page,
-          });
-        } else if (wishlist === null && cartData) {
-          cartCount = cartData.products.length;
-          wishlist = [0];
-          res.render("shop", {
-            userData,
-            product: productData,
-            category: categories,
-            cartCount,
-            wishCount,
-            wishlist,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page,
-          });
-        } else {
-          wishlist = [0];
-          res.render("shop", {
-            userData,
-            product: productData,
-            category: categories,
-            cartCount,
-            wishCount,
-            wishlsit,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page,
-          });
-        }
-    } else {
+      userData = await User.findById({ _id: req.session.userId });
+      wishlist = await Wishlist.findOne({ userId: userData._id });
+      cartData = await Cart.findOne({ userId: userData._id });
+      if (cartData && wishlist) {
+        cartCount = cartData.products.length;
+        wishCount = wishlist.products.length;
+        wishlist = wishlist.products;
         res.render("shop", {
           userData,
           product: productData,
           category: categories,
           cartCount,
           wishCount,
+          wishlist,
           totalPages: Math.ceil(count / limit),
           currentPage: page,
         });
+      } else if (cartData === null && wishlist) {
+        wishCount = wishlist.products.length;
+        wishlist = wishlist.products;
+        res.render("shop", {
+          userData,
+          product: productData,
+          category: categories,
+          cartCount,
+          wishCount,
+          wishlist,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page,
+        });
+      } else if (wishlist === null && cartData) {
+        cartCount = cartData.products.length;
+        wishlist = [0];
+        res.render("shop", {
+          userData,
+          product: productData,
+          category: categories,
+          cartCount,
+          wishCount,
+          wishlist,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page,
+        });
+      } else {
+        wishlist = [0];
+        res.render("shop", {
+          userData,
+          product: productData,
+          category: categories,
+          cartCount,
+          wishCount,
+          wishlsit,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page,
+        });
+      }
+    } else {
+      res.render("shop", {
+        userData,
+        product: productData,
+        category: categories,
+        cartCount,
+        wishCount,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      });
     }
   } catch (error) {
     console.log(error.message);
@@ -179,6 +181,8 @@ const loadShop = async (req, res, next) => {
 
 const loadCart = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     let products = [];
     if (req.session.userId) {
       userData = await User.findById({ _id: req.session.userId });
@@ -407,6 +411,8 @@ const decrement = async (req, res, next) => {
 
 const loadWishlist = async (req, res, next) => {
   try {
+    let cartCount;
+    let wishCount;
     let products = [];
     if (req.session.userId) {
       userData = await User.findById({ _id: req.session.userId });
@@ -519,7 +525,7 @@ const removeWishlist = async (req, res, next) => {
 
 const search = async (req, res) => {
   try {
-    let page=1
+    let page = 1;
 
     if (
       req.body.sort == "Price" &&
@@ -527,7 +533,7 @@ const search = async (req, res) => {
       req.body.page == 1 &&
       req.body.category == null
     ) {
-         productData = await Product.find({ active: true })
+      productData = await Product.find({ active: true })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
@@ -554,23 +560,23 @@ const search = async (req, res) => {
         $or: [
           { name: { $regex: ".*" + search + ".*", $options: "i" } },
           { brand: { $regex: ".*" + search + ".*", $options: "i" } },
-        ]
+        ],
       };
       if (categoryIds && categoryIds.length > 0) {
         query.category = { $in: categoryIds };
       }
 
-         productData = await Product.find(query)
+      productData = await Product.find(query)
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
 
-        if (productData.length==0) {
-          productData = await Product.find({ active: true })
+      if (productData.length == 0) {
+        productData = await Product.find({ active: true })
           .limit(limit * 1)
           .skip((page - 1) * limit)
           .exec();
-        }
+      }
       switch (sortOption) {
         case "Low to high":
           productData.sort((a, b) => a.offer_price - b.offer_price);
