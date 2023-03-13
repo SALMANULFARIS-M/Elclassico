@@ -12,16 +12,17 @@
                                     All Products
                                 </a>
                             </li>
-                            <% for(category of category) { %>
+                            <%if (category){ %>
+                                <% for(category of category) { %>
 
-                                <li class="main-nav-list w-100 h-100"><a class="text-black "><input type="checkbox"
-                                            class="me-2 mt-2" id="checkbox-category" value="<%=category._id%>"
-                                            name="category-list" onclick="filterProducts()">
-                                        <strong>
-                                            <%= category.name %>
-                                        </strong></a>
-                                </li>
-                                <% } %>
+                                    <li class="main-nav-list w-100 h-100"><a class="text-black "><input type="checkbox"
+                                                class="me-2 mt-2" id="checkbox-category" value="<%=category._id%>"
+                                                name="category-list" onclick="filterProducts()">
+                                            <strong>
+                                                <%= category.name %>
+                                            </strong></a>
+                                    </li>
+                                    <% } }%>
                         </ul>
                     </div>
                 </div>
@@ -100,87 +101,89 @@
                     <section class="lattest-product-area pb-40 category-list">
                         <div class="row" id="sortArea">
                             <!-- single product -->
-<%if (product){ %>
-                            <% for(let i=0;i<product.length;i++){ %>
-                                <div class="col-lg-4 col-md-6 my-5">
-                                    <div class="single-product" style="position: relative;">
-                                        <% if (product[i].stocks==0) { %>
-                                            <div class="out-of-stock" style="position: absolute;">
-                                                <h3><span class="badge" style="background-color: red;
+                            <%if (product){ %>
+                                <% for(let i=0;i<product.length;i++){ %>
+                                    <div class="col-lg-4 col-md-6 my-5">
+                                        <div class="single-product" style="position: relative;">
+                                            <% if (product[i].stocks==0) { %>
+                                                <div class="out-of-stock" style="position: absolute;">
+                                                    <h3><span class="badge" style="background-color: red;
                                                 color: white;
                                                 padding: 4px 8px;
                                                 text-align: center;
                                                 border-radius: 5px;">Out of stock</span></h3>
-                                            </div>
-                                            <% } %>
-                                                <img class="img-fluid" src="/productimg/<%=product[i].image[1]%>" alt=""
-                                                    style="height: 20em;">
-                                                <div class="product-details">
-                                                    <h6>
-                                                        <%=product[i].name%>
-                                                    </h6>
-                                                    <div class="price">
-                                                        <h6><i class="bi bi-currency-rupee"></i>
-                                                            <%=product[i].offer_price%>.00
+                                                </div>
+                                                <% } %>
+                                                    <img class="img-fluid" src="/productimg/<%=product[i].image[1]%>"
+                                                        alt="" style="height: 20em;">
+                                                    <div class="product-details">
+                                                        <h6>
+                                                            <%=product[i].name%>
                                                         </h6>
-                                                        <h6 class="l-through text-danger"><i
-                                                                class="bi bi-currency-rupee"></i>
-                                                            <%=product[i].gross_price%>.00
-                                                        </h6>
-                                                    </div>
-                                                    <div class="prd-bottom">
+                                                        <div class="price">
+                                                            <h6><i class="bi bi-currency-rupee"></i>
+                                                                <%=product[i].offer_price%>.00
+                                                            </h6>
+                                                            <h6 class="l-through text-danger"><i
+                                                                    class="bi bi-currency-rupee"></i>
+                                                                <%=product[i].gross_price%>.00
+                                                            </h6>
+                                                        </div>
+                                                        <div class="prd-bottom">
 
 
-                                                        <% if(typeof userData==="undefined" ){ %>
-                                                            <a href="/signin" class="social-info">
-                                                                <span class=""><i
-                                                                        class="bi bi-cart-plus-fill text-black"></i></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a href="/signin" class="social-info">
-                                                                <span><i class="bi bi-heart-fill"></i></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <% } else {%>
-                                                                <% if(product[i].stocks !=0){%>
-                                                                    <a onclick="addCart('<%=product[i]._id%>')"
-                                                                        class="social-info">
-                                                                        <span class=""><i
-                                                                                class="bi bi-cart-plus-fill text-black"></i></span>
-                                                                        <p class="hover-text">add to bag</p>
-                                                                    </a>
-                                                                    <%}%>
-                                                                        <% if(wishlist.includes(product[i]._id)){ %>
-                                                                            <a onclick="wishlist('<%=product[i]._id%>')"
-                                                                                class="social-info">
-                                                                                <span><i class="bi bi-heart-fill text-danger"
-                                                                                        id="wish-<%=product[i]._id%>"></i></span>
-                                                                                <p class="hover-text">Wishlist</p>
-                                                                            </a>
-                                                                            <% } else {%>
+                                                            <% if(typeof userData==="undefined" ){ %>
+                                                                <a href="/signin" class="social-info">
+                                                                    <span class=""><i
+                                                                            class="bi bi-cart-plus-fill text-black"></i></span>
+                                                                    <p class="hover-text">add to bag</p>
+                                                                </a>
+                                                                <a href="/signin" class="social-info">
+                                                                    <span><i class="bi bi-heart-fill"></i></span>
+                                                                    <p class="hover-text">Wishlist</p>
+                                                                </a>
+                                                                <% } else {%>
+                                                                    <% if(product[i].stocks !=0){%>
+                                                                        <a onclick="addCart('<%=product[i]._id%>')"
+                                                                            class="social-info">
+                                                                            <span class=""><i
+                                                                                    class="bi bi-cart-plus-fill text-black"></i></span>
+                                                                            <p class="hover-text">add to bag</p>
+                                                                        </a>
+                                                                        <%}%>
+                                                                            <% if(wishlist.includes(product[i]._id)){ %>
                                                                                 <a onclick="wishlist('<%=product[i]._id%>')"
                                                                                     class="social-info">
-                                                                                    <span><i class="bi bi-heart-fill"
+                                                                                    <span><i class="bi bi-heart-fill text-danger"
                                                                                             id="wish-<%=product[i]._id%>"></i></span>
                                                                                     <p class="hover-text">Wishlist</p>
                                                                                 </a>
-                                                                                <%}%>
+                                                                                <% } else {%>
+                                                                                    <a onclick="wishlist('<%=product[i]._id%>')"
+                                                                                        class="social-info">
+                                                                                        <span><i class="bi bi-heart-fill"
+                                                                                                id="wish-<%=product[i]._id%>"></i></span>
+                                                                                        <p class="hover-text">Wishlist
+                                                                                        </p>
+                                                                                    </a>
                                                                                     <%}%>
-                                                                                        <a href="/viewproduct?id=<%=product[i]._id%>"
-                                                                                            class="social-info">
-                                                                                            <span><i
-                                                                                                    class="fa-solid fa-circle-info text-black"></i></span>
-                                                                                            <p class="hover-text">view
-                                                                                                more</p>
-                                                                                        </a>
+                                                                                        <%}%>
+                                                                                            <a href="/viewproduct?id=<%=product[i]._id%>"
+                                                                                                class="social-info">
+                                                                                                <span><i
+                                                                                                        class="fa-solid fa-circle-info text-black"></i></span>
+                                                                                                <p class="hover-text">
+                                                                                                    view
+                                                                                                    more</p>
+                                                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <% } %>
-                                <% }else{ %>
-                                    No Products are found
                                     <% } %>
+                                        <% }else{ %>
+                                            No Products are found
+                                            <% } %>
 
                         </div>
                     </section>
