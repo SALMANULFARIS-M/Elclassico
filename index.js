@@ -75,6 +75,17 @@ app.use(function (err, req, res, next) {
   }
 });
 
+//502
+app.use(function (err, req, res, next) {
+  res.status(502);
+
+  // respond with HTML page for 502 errors
+  if (req.accepts("html")) {
+    res.render("502");
+    return;
+  }
+});
+
 //create server
 app.listen(3000, function () {
   console.log("Server is running... ");
