@@ -15,15 +15,13 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const serviceSid = process.env.TWILIO_AUTH_SID;
 const client = require("twilio")(accountSid, authToken);
 
-let userData;
-let cartData;
-let wishlist;
-
 //load home page with checking user in session or not
 const loadHome = async (req, res, next) => {
   try {
     let cartCount;
     let wishCount;
+    let cartData;
+    let wishlist;
     const productData = await Product.find({
       active: true,
     }).populate("category");
@@ -31,7 +29,7 @@ const loadHome = async (req, res, next) => {
     const banner = await Banner.find({ __v: 0 });
 
     if (req.session.userId) {
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       cartData = await Cart.findOne({ userId: userData._id });
       wishlist = await Wishlist.findOne({ userId: userData._id });
 
@@ -73,6 +71,7 @@ const loadHome = async (req, res, next) => {
           wishlist,
         });
       } else {
+        let userData;
         wishlist = [0];
         res.render("home", {
           userData,
@@ -104,10 +103,12 @@ const loadHome = async (req, res, next) => {
 
 const contact = async (req, res, next) => {
   try {
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     if (req.session.userId) {
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       cartData = await Cart.findOne({ userId: userData._id });
       wishlist = await Wishlist.findOne({ userId: userData._id });
       if (cartData && wishlist) {
@@ -124,7 +125,8 @@ const contact = async (req, res, next) => {
         res.render("contact", { userData, cartCount, wishCount });
       }
     } else {
-      res.render("contact");
+      let userData;
+      res.render("contact",{userData});
     }
   } catch (error) {
     console.log(error.message);
@@ -458,6 +460,7 @@ const resetAndSet = async (req, res, next) => {
 const logout = async (req, res, next) => {
   try {
     req.session.destroy();
+    console.log(req.session, "dfjkaslfsd;k");
     res.redirect("/signin");
   } catch (error) {
     console.log(error.message);
@@ -467,7 +470,10 @@ const logout = async (req, res, next) => {
 
 const userProfile = async (req, res, next) => {
   try {
-    userData = await User.findById({ _id: req.session.userId });
+
+    let cartData;
+    let wishlist;
+    const userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });
     if (cartData && wishlist) {
@@ -491,6 +497,9 @@ const userProfile = async (req, res, next) => {
 
 const addAddress = async (req, res, next) => {
   try {
+    let userData;
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     userData = await User.findById({ _id: req.session.userId });
@@ -595,8 +604,11 @@ const deleteAddress = async (req, res, next) => {
 
 const editProfile = async (req, res, next) => {
   try {
+
+    let cartData;
+    let wishlist;
     let userAddress;
-    userData = await User.findById({ _id: req.session.userId });
+   const userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });
     if (req.query.id) {

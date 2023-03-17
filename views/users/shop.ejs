@@ -66,7 +66,7 @@
                                 </style>
                             </div>
                         </div>
-                        <div class="pagination">
+                        <div class="pagination" id="pagination">
                             <% if (currentPage> 1) { %>
                                 <a href="?page=<%= currentPage-1 %>" class="prev-arrow">
                                     <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
@@ -218,11 +218,14 @@
 
                     success: function (response) {
                         let filterArea = document.getElementById('sortArea')
-                        let html = ""
-                        console.log(response);
+                        let pagination = document.getElementById('pagination')
+                        let htmlA = ""
+                        let htmlB =""
                         if (response.products) {
+                         const currentPage = response.currentPage;
+                         const totalPages = response.totalPages;
                             response.products.forEach((element) => {
-                                html += `<div class="col-lg-4 col-md-6 my-5">
+                                htmlA += `<div class="col-lg-4 col-md-6 my-5">
                                     <div class="single-product">
                                         <img class="img-fluid" src="/productimg/${element.image[0]}" alt=""
                                             style="height: 20em;">
@@ -287,16 +290,45 @@
                                     </div>
                                 </div>`
                             })
-                            filterArea.innerHTML = html
+                            htmlB += ` <% if (currentPage > 1) { %>
+                                <a href="?page=<%= currentPage-1 %>" class="prev-arrow">
+                                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                                </a>
+                                <% } %>
+                                    <% for(let j=1;j<=totalPages;j++){ %>
+                                        <% if(j==currentPage) { %>
+                                            <a href="#" class="active" id="page">
+                                                <%=j%>
+                                            </a>
+                                            <% } else if (j==currentPage+1 || j==currentPage-1 || j==1 || j==totalPages)
+                                                { %>
+                                                <a href="?page=<%=j%>">
+                                                    <%=j%>
+                                                </a>
+                                                <% } else if (j==currentPage+2 || j==currentPage-2) { %>
+                                                    <a href="#" class="dot-dot">
+                                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    </a>
+                                                    <% } %>
+                                                        <% } %>
+                                                            <% if (currentPage < totalPages) { %>
+                                                                <a href="?page=<%= parseInt(currentPage)+1 %>"
+                                                                    class="next-arrow">
+                                                                    <i class="fa fa-long-arrow-right"
+                                                                        aria-hidden="true"></i>
+                                                                </a>
+                                                                <% } %>`
+
+                            filterArea.innerHTML = htmlA
+                            pagination.innerHTML = htmlB
 
                         }
-
-
 
                     }
                 })
             }
-
+            const search_li = document.getElementById('search-li');
+            search_li.style.display = "block"
             const page = document.getElementById('shop');
             page.classList.remove('text-light');
             page.classList.add('text-warning');

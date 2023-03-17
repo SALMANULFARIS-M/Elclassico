@@ -4,15 +4,13 @@ const Category = require("../models/categoryModel");
 const Cart = require("../models/cartModel");
 const Wishlist = require("../models/wishlistModel");
 
-let userData;
-let productData;
-let cartData;
-let wishlist;
 let message;
 const limit = 6;
 
 const viewProduct = async (req, res, next) => {
   try {
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     if (req.session.userId) {
@@ -21,7 +19,7 @@ const viewProduct = async (req, res, next) => {
         _id: id,
         active: true,
       }).populate("category");
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       cartData = await Cart.findOne({ userId: userData._id });
       wishlist = await Wishlist.findOne({ userId: userData._id });
 
@@ -68,6 +66,7 @@ const viewProduct = async (req, res, next) => {
         s;
       }
     } else {
+      let userData;
       const id = req.query.id;
       const product = await Product.findById({
         _id: id,
@@ -84,6 +83,9 @@ const viewProduct = async (req, res, next) => {
 
 const loadShop = async (req, res, next) => {
   try {
+    let productData;
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     let page = 1;
@@ -100,13 +102,9 @@ const loadShop = async (req, res, next) => {
       .exec();
     const count = await Product.find({
       active: true,
-    })
-      .populate("category")
-      .countDocuments();
+    }).countDocuments();
     if (req.session.userId) {
-      userData = await User.findById({ _id: req.session.userId });
-
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       wishlist = await Wishlist.findOne({ userId: userData._id });
       cartData = await Cart.findOne({ userId: userData._id });
       if (cartData && wishlist) {
@@ -163,6 +161,7 @@ const loadShop = async (req, res, next) => {
         });
       }
     } else {
+      let userData;
       res.render("shop", {
         userData,
         product: productData,
@@ -181,11 +180,13 @@ const loadShop = async (req, res, next) => {
 
 const loadCart = async (req, res, next) => {
   try {
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     let products = [];
     if (req.session.userId) {
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       cartData = await Cart.findOne({ userId: userData._id }).populate(
         "products.productId"
       );
@@ -230,6 +231,7 @@ const loadCart = async (req, res, next) => {
         });
       }
     } else {
+      let userData;
       res.render("cart", { userData });
     }
   } catch (error) {
@@ -243,7 +245,7 @@ const addCart = async (req, res, next) => {
     let id = req.params.productId;
 
     const productData = await Product.findById({ _id: id });
-    cartData = await Cart.findOne({ userId: req.session.userId });
+    let cartData = await Cart.findOne({ userId: req.session.userId });
 
     if (cartData) {
       let existData = await Cart.findOne({
@@ -328,7 +330,7 @@ const removeCart = async (req, res, next) => {
 const increment = async (req, res, next) => {
   try {
     let id = req.params.productId;
-    productData = await Product.findById({ _id: id });
+    const productData = await Product.findById({ _id: id });
 
     //update quantity and price
     await Cart.findOneAndUpdate(
@@ -342,7 +344,7 @@ const increment = async (req, res, next) => {
     );
 
     //Updated cart Data of a Product
-    cartData = await Cart.findOne({
+    const cartData = await Cart.findOne({
       userId: req.session.userId,
       "products.productId": id,
     });
@@ -375,7 +377,7 @@ const decrement = async (req, res, next) => {
     if (quantity > 1) {
       console.log("hello");
       //update quantity and price
-      productData = await Product.findById({ _id: id });
+      const productData = await Product.findById({ _id: id });
       await Cart.findOneAndUpdate(
         { userId: req.session.userId, "products.productId": id },
         {
@@ -387,7 +389,7 @@ const decrement = async (req, res, next) => {
       );
 
       //Updated cart Data of a Product
-      cartData = await Cart.findOne({
+      const cartData = await Cart.findOne({
         userId: req.session.userId,
         "products.productId": id,
       });
@@ -411,11 +413,13 @@ const decrement = async (req, res, next) => {
 
 const loadWishlist = async (req, res, next) => {
   try {
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
     let products = [];
     if (req.session.userId) {
-      userData = await User.findById({ _id: req.session.userId });
+      const userData = await User.findById({ _id: req.session.userId });
       wishlist = await Wishlist.findOne({ userId: userData._id });
       cartData = await Cart.findOne({ userId: userData._id });
 
@@ -443,7 +447,7 @@ const loadWishlist = async (req, res, next) => {
         res.render("wishlist", { userData, products, cartCount, wishCount });
       }
     } else {
-      res.render("cart", { userData });
+      res.redirect("/signin");
     }
   } catch (error) {
     console.log(error.message);
@@ -454,7 +458,8 @@ const loadWishlist = async (req, res, next) => {
 const addWishlist = async (req, res, next) => {
   try {
     let id = req.params.productId;
-
+    let productData;
+    let wishlist;
     productData = await Product.findById({ _id: id });
     wishlist = await Wishlist.findOne({ userId: req.session.userId });
 
@@ -525,6 +530,7 @@ const removeWishlist = async (req, res, next) => {
 
 const search = async (req, res) => {
   try {
+    let productData;
     let page = 1;
 
     if (
@@ -587,9 +593,15 @@ const search = async (req, res) => {
         default:
         // Sort by default (no sorting)
       }
-      console.log(productData);
+      const count = await Product.find({
+        active: true,
+      }).countDocuments();
 
-      res.json({ products: productData });
+      res.json({
+        products: productData,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      });
     }
   } catch (error) {
     console.log(error.message);

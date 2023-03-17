@@ -8,11 +8,6 @@ const Coupon = require("../models/couponModel");
 const Razorpay = require("razorpay");
 var crypto = require("crypto");
 
-let userData;
-let cartData;
-let wishlist;
-let orderData;
-
 //Razorpay
 const razorpaySecret = process.env.RAZORPAY_KEY_SECRET;
 const razorpayId = process.env.RAZORPAY_KEY_ID;
@@ -23,9 +18,11 @@ let instance = new Razorpay({
 
 const loadCheckout = async (req, res, next) => {
   try {
+    let cartData;
+    let wishlist;
     let cartCount;
     let wishCount;
-    userData = await User.findById({ _id: req.session.userId });
+    const userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id }).populate(
       "products.productId"
     );
@@ -69,6 +66,8 @@ const loadCheckout = async (req, res, next) => {
 
 const saveOrder = async (req, res, next) => {
   try {
+    let userData;
+    let cartData;
     const payment_method = req.body.payment;
     const wallet = Number(req.body.wallet);
     userData = await User.findById({ _id: req.session.userId });
@@ -179,14 +178,16 @@ const paymentVerify = async (req, res, next) => {
     const order = req.body.order;
 
     const hmac_sha256 = (data, razorpaySecret) => {
-      return crypto.createHmac("sha256", secret).update(data).digest("hex");
+      return crypto
+        .createHmac("sha256", razorpaySecret)
+        .update(data)
+        .digest("hex");
     };
 
     const generated_signature = hmac_sha256(
       payment.razorpay_order_id + "|" + payment.razorpay_payment_id,
-      secret
+      razorpaySecret
     );
-    f;
     if (generated_signature == payment.razorpay_signature) {
       await Order.findByIdAndUpdate(
         { _id: order.receipt },
@@ -205,6 +206,9 @@ const paymentVerify = async (req, res, next) => {
 
 const orderConfirm = async (req, res, next) => {
   try {
+    let userData;
+    let wishlist;
+    let orderData;
     let cartCount;
     let wishCount;
     if (req.headers.referer && req.headers.referer.endsWith("/checkout")) {
@@ -277,6 +281,10 @@ const orderConfirm = async (req, res, next) => {
 
 const myOrder = async (req, res, next) => {
   try {
+    let userData;
+    let cartData;
+    let wishlist;
+    let orderData;
     let cartCount;
     let wishCount;
     userData = await User.findById({ _id: req.session.userId });
@@ -311,6 +319,10 @@ const myOrder = async (req, res, next) => {
 
 const orderDetails = async (req, res, next) => {
   try {
+    let userData;
+    let cartData;
+    let wishlist;
+    let orderData;
     userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });
@@ -372,7 +384,7 @@ const orderDetails = async (req, res, next) => {
 
 const loadOrder = async (req, res, next) => {
   try {
-    orderData = await Order.find({}).populate("userId").sort({ createdAt: -1 });
+   const orderData = await Order.find({}).populate("userId").sort({ createdAt: -1 });
     const pCount = await Order.find({
       order_status: "PLACED",
     }).count();
@@ -409,7 +421,7 @@ const loadOrder = async (req, res, next) => {
 const viewOrder = async (req, res, next) => {
   try {
     const id = req.query.id;
-    orderData = await Order.findById({ _id: id })
+    const orderData = await Order.findById({ _id: id })
       .populate("products.productId")
       .populate("userId");
     let address = await User.findOne(
@@ -444,7 +456,7 @@ const updateOrder = async (req, res, next) => {
 
 const cancelOrder = async (req, res, next) => {
   try {
-    orderData = await Order.findById({ _id: req.query.id }).populate(
+    const orderData = await Order.findById({ _id: req.query.id }).populate(
       "products.productId"
     );
 
