@@ -202,7 +202,6 @@ const paymentVerify = async (req, res, next) => {
 
 const orderConfirm = async (req, res, next) => {
   try {
-    let userData;
     let wishlist;
     let orderData;
     let cartCount;
@@ -212,11 +211,11 @@ const orderConfirm = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .populate("products.productId");
       const products = orderData.products;
-      const user = await User.findById({
+      const userData = await User.findById({
         _id: orderData.userId,
         "address._id": orderData.address,
       });
-      const orderAddress = user.address[0];
+      const orderAddress = userData.address[0];
       wishlist = await Wishlist.findOne({ userId: userData._id });
       const deletedData = await Cart.updateOne(
         { userId: orderData.userId },
@@ -270,6 +269,7 @@ const orderConfirm = async (req, res, next) => {
       res.redirect("/");
     }
   } catch (error) {
+    console.log(error.message);
     next(error);
   }
 };
