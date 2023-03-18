@@ -16,7 +16,6 @@ const adminLogin = async (req, res, next) => {
   try {
     res.render("login");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -33,7 +32,7 @@ const verifyAdmin = async (req, res, next) => {
       if (passwordCheck) {
         if (adminData.is_admin === true) {
           req.session.adminId = adminData._id;
-          res.json({success:true});
+          res.json({ success: true });
         } else {
           res.json({ message: "verify Your account" });
         }
@@ -44,7 +43,6 @@ const verifyAdmin = async (req, res, next) => {
       res.json({ message: "You Are not a Admin" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -54,7 +52,6 @@ const logout = async (req, res, next) => {
     req.session.destroy();
     res.redirect("/admin");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -68,68 +65,76 @@ const dashboard = async (req, res, next) => {
 
     const userData = await User.find({});
     const productData = await Product.find({});
-    const category = await Category.find({active:true});
+    const category = await Category.find({ active: true });
     const deliveredCount = await Order.find({
       order_status: "DELIVERED",
     }).count();
     const earnings = await Order.aggregate([
       { $match: { payment_status: "COMPLETED" } },
       { $group: { _id: null, total: { $sum: "$total_price" } } },
-      { $project: { _id: 0, total: 1 } }
+      { $project: { _id: 0, total: 1 } },
     ]);
 
     const cod = await Order.aggregate([
       { $match: { payment_method: "COD", payment_status: "COMPLETED" } },
       { $group: { _id: null, total: { $sum: "$total_price" } } },
-      { $project: { _id: 0, total: 1 } }
+      { $project: { _id: 0, total: 1 } },
     ]);
 
     const razorpay = await Order.aggregate([
       { $match: { payment_method: "Razorpay", payment_status: "COMPLETED" } },
       { $group: { _id: null, total: { $sum: "$total_price" } } },
-      { $project: { _id: 0, total: 1 } }
+      { $project: { _id: 0, total: 1 } },
     ]);
 
     const wallet = await Order.aggregate([
       { $match: { payment_method: "wallet", payment_status: "COMPLETED" } },
       { $group: { _id: null, total: { $sum: "$total_price" } } },
-      { $project: { _id: 0, total: 1 } }
+      { $project: { _id: 0, total: 1 } },
     ]);
 
     const lastMonthEarning = await Order.aggregate([
-      { $match:{ createdAt: {
-        $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      },  payment_status: "COMPLETED" } },
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+          },
+          payment_status: "COMPLETED",
+        },
+      },
       { $group: { _id: null, total: { $sum: "$total_price" } } },
-      { $project: { _id: 0, total: 1 } }
+      { $project: { _id: 0, total: 1 } },
     ]);
     const lastWeekData = await Order.aggregate([
       {
         $match: {
           createdAt: {
-            $gte: new Date(Date.now() - 6  * 24 * 60 * 60 * 1000)
-          }, payment_status: "COMPLETED"
-        }
+            $gte: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+          },
+          payment_status: "COMPLETED",
+        },
       },
       {
         $group: {
-          _id:{
+          _id: {
             $dateToString: {
               format: "%Y-%m-%d",
-              date: "$createdAt"
-            }
+              date: "$createdAt",
+            },
           },
-          totalPrice: { $sum: "$total_price" }
-        }
+          totalPrice: { $sum: "$total_price" },
+        },
       },
       {
         $sort: {
-          "_id": -1
-        }
-      }
+          _id: -1,
+        },
+      },
     ]);
-    const totalsArray = lastWeekData.map(item => item.totalPrice);
-    const daysArray = lastWeekData.map(item =>new Date(item._id).toString().slice(0,3));
+    const totalsArray = lastWeekData.map((item) => item.totalPrice);
+    const daysArray = lastWeekData.map((item) =>
+      new Date(item._id).toString().slice(0, 3)
+    );
     const days = JSON.stringify(daysArray);
     const totals = JSON.stringify(totalsArray);
     res.render("dashboard", {
@@ -144,10 +149,9 @@ const dashboard = async (req, res, next) => {
       wallet,
       days,
       totals,
-      lastMonthEarning
+      lastMonthEarning,
     });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -157,7 +161,6 @@ const customers = async (req, res, next) => {
     const userData = await User.find({ __v: 0 });
     res.render("customers", { users: userData });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -167,7 +170,6 @@ const customersInfo = async (req, res, next) => {
     const userData = await User.findOne({ _id: req.query.id });
     res.render("customerinfo", { user: userData });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -195,13 +197,9 @@ const blockCustomer = async (req, res, next) => {
           },
         }
       );
-      console.log(updatedData);
       res.redirect("/admin/customers");
-    } else {
-      console.log("something went wrong while block");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -211,7 +209,6 @@ const banner = async (req, res, next) => {
     const banner = await Banner.find({ __v: 0 });
     res.render("banner", { banner });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -220,7 +217,6 @@ const addbanner = async (req, res, next) => {
   try {
     res.render("banneradd");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -248,7 +244,6 @@ const saveBanner = async (req, res, next) => {
       res.render("banneradd", { message: "Already Exist" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -259,7 +254,6 @@ const deleteBanner = async (req, res, next) => {
     await Banner.deleteOne({ _id: id });
     res.redirect("/admin/banner");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -277,7 +271,6 @@ const loadSales = async (req, res, next) => {
 
     res.render("sales", { orderData, totalAmount });
   } catch (error) {
-    console.log(error.message);
     next(error.message);
   }
 };
@@ -305,7 +298,6 @@ const salesByDate = async (req, res, next) => {
 
     res.json({ orderData, totalAmount });
   } catch (error) {
-    console.log(error.message);
     next(error.message);
   }
 };
@@ -334,8 +326,8 @@ const downloadPdf = async (req, res, next) => {
     const data = {
       orderData: orderData,
       total: totalAmount,
-      startDate:startDate.toString().slice(0,10),
-      endDate:endDate.toString().slice(0,10)
+      startDate: startDate.toString().slice(0, 10),
+      endDate: endDate.toString().slice(0, 10),
     };
 
     const filePathName = path.resolve(
@@ -361,7 +353,6 @@ const downloadPdf = async (req, res, next) => {
     });
     stream.pipe(res);
   } catch (error) {
-    console.log(error.message);
     next(error.message);
   }
 };
@@ -418,7 +409,6 @@ const downloadExcel = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error.message);
   }
 };

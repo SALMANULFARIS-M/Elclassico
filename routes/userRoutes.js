@@ -10,8 +10,10 @@ const auth = require("../middleware/auth");
 //set views path for user
 user_route.set("views", "./views/users");
 
-//user controller
+// controllers
 const uc = require("../controllers/userController");
+const sc = require("../controllers/shopController");
+const oc = require("../controllers/orderController");
 
 //user side validation
 user_route.get("/signup", auth.isLogout, uc.loadSignup);
@@ -41,7 +43,6 @@ user_route.post("/updateaddress", auth.isLogin, uc.updateAddress);
 user_route.get("/deleteaddress", auth.isLogin, uc.deleteAddress);
 
 //user side shop manage
-const sc = require("../controllers/shopController");
 user_route.get("/viewproduct", sc.viewProduct);
 user_route.get("/shop", sc.loadShop);
 user_route.get("/cart", auth.loginPage, sc.loadCart);
@@ -57,7 +58,6 @@ user_route.post("/search", sc.search);
 // user_route.post("/sortprice",sc.sortPrice);
 
 //user side order manage
-const oc = require("../controllers/orderController");
 user_route.get("/myorder", auth.isLogin, oc.myOrder);
 user_route.get("/checkout", auth.isLogin, oc.loadCheckout);
 user_route.post("/checkout", auth.isLogin, oc.saveOrder);

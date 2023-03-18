@@ -72,11 +72,9 @@ const viewProduct = async (req, res, next) => {
         _id: id,
         active: true,
       }).populate("category");
-      console.log(product);
       res.render("productdetail", { userData, product, cartCount, wishCount });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -173,7 +171,6 @@ const loadShop = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -235,7 +232,6 @@ const loadCart = async (req, res, next) => {
       res.render("cart", { userData });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -306,7 +302,6 @@ const addCart = async (req, res, next) => {
       res.json({ success, message: "Successfully added to Wishlist" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -322,7 +317,6 @@ const removeCart = async (req, res, next) => {
 
     res.redirect("/cart");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -359,7 +353,6 @@ const increment = async (req, res, next) => {
 
     res.json({ updatedPrice, sum });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -375,7 +368,6 @@ const decrement = async (req, res, next) => {
 
     //check for quantity greater than 1
     if (quantity > 1) {
-      console.log("hello");
       //update quantity and price
       const productData = await Product.findById({ _id: id });
       await Cart.findOneAndUpdate(
@@ -406,7 +398,6 @@ const decrement = async (req, res, next) => {
       res.redirect("/cart");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -450,7 +441,6 @@ const loadWishlist = async (req, res, next) => {
       res.redirect("/signin");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -497,7 +487,6 @@ const addWishlist = async (req, res, next) => {
       res.json({ success });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -523,7 +512,6 @@ const removeWishlist = async (req, res, next) => {
       res.redirect("/wishlist");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -535,8 +523,6 @@ const search = async (req, res) => {
     let searchQuery = req.body.search || '';
     let categoryIds = req.body.category || null;
     let sortOption = req.body.sort || '';
-
-console.log(page);
 
     const query = {
       $or: [

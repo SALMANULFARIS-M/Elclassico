@@ -59,7 +59,6 @@ const loadCheckout = async (req, res, next) => {
       res.redirect("/cart");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -135,7 +134,6 @@ const saveOrder = async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -167,7 +165,6 @@ const saveAddress = async (req, res, next) => {
 
     res.json({ success: true });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -199,7 +196,6 @@ const paymentVerify = async (req, res, next) => {
       res.json({ success: false });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -274,7 +270,6 @@ const orderConfirm = async (req, res, next) => {
       res.redirect("/");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -312,7 +307,6 @@ const myOrder = async (req, res, next) => {
       res.render("myorder", { userData, cartCount, wishCount, orderData });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -377,14 +371,15 @@ const orderDetails = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const loadOrder = async (req, res, next) => {
   try {
-   const orderData = await Order.find({}).populate("userId").sort({ createdAt: -1 });
+    const orderData = await Order.find({})
+      .populate("userId")
+      .sort({ createdAt: -1 });
     const pCount = await Order.find({
       order_status: "PLACED",
     }).count();
@@ -413,7 +408,6 @@ const loadOrder = async (req, res, next) => {
       rCount,
     });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -431,7 +425,6 @@ const viewOrder = async (req, res, next) => {
 
     res.render("orderinfo", { orderData, address });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -449,7 +442,6 @@ const updateOrder = async (req, res, next) => {
     );
     res.redirect("/admin/orders");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -474,7 +466,6 @@ const cancelOrder = async (req, res, next) => {
     );
     res.redirect("/myorder");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -487,7 +478,6 @@ const returnOrder = async (req, res, next) => {
     );
     res.redirect("/myorder");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -509,7 +499,6 @@ const returnApprove = async (req, res, next) => {
     );
     res.json({ success: true });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -519,7 +508,6 @@ const coupon = async (req, res, next) => {
     const coupon = await Coupon.find({});
     res.render("coupon", { coupon });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -528,7 +516,6 @@ const addCoupon = async (req, res, next) => {
   try {
     res.render("addcoupon");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -560,7 +547,6 @@ const saveCoupon = async (req, res, next) => {
       res.render("addcoupon", { message });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -570,7 +556,6 @@ const deleteCoupon = async (req, res, next) => {
     await Coupon.findByIdAndDelete({ _id: req.query.id });
     res.redirect("/admin/coupon");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -628,8 +613,6 @@ const applyCoupon = (req, res, next) => {
                   ])
                     .then((result) => {
                       if (result.length > 0) {
-                        console.log(result);
-                        console.log("This coupon is already used!");
                         let responseData = {
                           price: total,
                           message: "This coupon is already used!",
@@ -666,8 +649,6 @@ const applyCoupon = (req, res, next) => {
                       }
                     })
                     .catch((err) => {
-                      console.log(err);
-                      // console.log("error in finding coupondata");
                       let responseData = {
                         price: total,
                         message:
@@ -705,7 +686,6 @@ const applyCoupon = (req, res, next) => {
       );
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };

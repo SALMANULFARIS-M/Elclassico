@@ -9,7 +9,6 @@ const category = async (req, res, next) => {
     const categories = await Category.find({ active: true });
     res.render("category", { category: categories });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -18,7 +17,6 @@ const addCategory = async (req, res, next) => {
   try {
     res.render("addcategory");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -34,7 +32,8 @@ const saveCategory = async (req, res, next) => {
       const newCategory = req.body.category;
       const image = req.file.filename;
       const categoryData = await Category.find({
-        name: newCategory.toUpperCase(),active:true
+        name: newCategory.toUpperCase(),
+        active: true,
       });
 
       if (categoryData.length === 0) {
@@ -45,19 +44,16 @@ const saveCategory = async (req, res, next) => {
         const save = await category.save();
         if (save) {
           res.redirect("/admin/category");
-        } else {
-          console.log("save not work");
         }
       } else {
-        res.render("addcategory",{ message: "Already Exist" });
+        res.render("addcategory", { message: "Already Exist" });
       }
     } else {
-      res.render("addcategory",{
+      res.render("addcategory", {
         message: "Only png,jpg,jpeg and webp are allowed",
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -65,19 +61,18 @@ const saveCategory = async (req, res, next) => {
 const editCategory = async (req, res, next) => {
   try {
     const id = req.query.id;
-    const categoryData = await Category.findById({ _id: id,active:true });
+    const categoryData = await Category.findById({ _id: id, active: true });
     res.render("categoryedit", { categoryData });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const updateCategory = async (req, res, next) => {
-
   try {
     const existData = await Category.findOne({
-      name: req.body.category.toUpperCase(),active:true
+      name: req.body.category.toUpperCase(),
+      active: true,
     });
     if (!existData) {
       if (req.file) {
@@ -106,7 +101,6 @@ const updateCategory = async (req, res, next) => {
       res.json({ message: "Category already exist" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -114,7 +108,7 @@ const updateCategory = async (req, res, next) => {
 const deleteCategory = async (req, res, next) => {
   try {
     const id = req.params.categoryId;
-    const productCheck = await Product.find({ category: id,active:true });
+    const productCheck = await Product.find({ category: id, active: true });
     if (productCheck.length < 1) {
       await Category.findByIdAndUpdate(
         { _id: id },
@@ -127,7 +121,6 @@ const deleteCategory = async (req, res, next) => {
       res.json({ success });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -139,7 +132,6 @@ const products = async (req, res, next) => {
     }).populate("category");
     res.render("products", { products: productData });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -152,17 +144,15 @@ const productInfo = async (req, res, next) => {
     );
     res.render("productinfo", { product: productData });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const addProducts = async (req, res, next) => {
   try {
-    const Categories = await Category.find({active: true });
+    const Categories = await Category.find({ active: true });
     res.render("addproducts", { categories: Categories });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -204,7 +194,6 @@ const saveProduct = async (req, res, next) => {
       res.render("addproducts", { message: "Not valid data" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -224,7 +213,6 @@ const editProduct = async (req, res, next) => {
       category_name,
     });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -307,7 +295,6 @@ const updatedProduct = async (req, res, next) => {
     }
     res.redirect("/admin/products");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -318,7 +305,6 @@ const deleteProduct = async (req, res, next) => {
     await Product.findByIdAndUpdate({ _id: id }, { $set: { active: false } });
     res.redirect("/admin/products");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };

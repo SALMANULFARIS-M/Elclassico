@@ -96,7 +96,6 @@ const loadHome = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -126,10 +125,9 @@ const contact = async (req, res, next) => {
       }
     } else {
       let userData;
-      res.render("contact",{userData});
+      res.render("contact", { userData });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -139,7 +137,6 @@ const loadSignin = async (req, res, next) => {
   try {
     res.render("signin");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -149,7 +146,6 @@ const loadSignup = async (req, res, next) => {
   try {
     res.render("signup");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -160,7 +156,6 @@ const securePassword = async (password) => {
     const passwordHash = await bcrypt.hash(password, 10);
     return passwordHash;
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -197,7 +192,6 @@ const insertUser = async (req, res, next) => {
       res.json({ message: "Account already Exist" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -226,7 +220,6 @@ const verifyLogin = async (req, res, next) => {
       res.json({ message: "Create a new Account to signin" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -236,7 +229,6 @@ const loadMobileOTP = async (req, res, next) => {
   try {
     res.render("mobileotp");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -263,7 +255,6 @@ const sendOTP = async (req, res, next) => {
       res.render("mobileotp", { message: "Please create an account fisrt" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -276,7 +267,6 @@ const otpLoad = async (req, res, next) => {
       res.redirect("/");
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -290,7 +280,6 @@ const verifyOTP = async (req, res, next) => {
       .services(serviceSid)
       .verificationChecks.create({ to: "+91" + Number, code: otp })
       .then((verification_check) => {
-        console.log(verification_check.status);
         if (verification_check.status === "approved") {
           if (req.session.userData.name) {
             //when signup occur
@@ -323,17 +312,13 @@ const verifyOTP = async (req, res, next) => {
         }
       });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const resendOtp = async (req, res, next) => {
   try {
-    console.log(req.session.userData);
-
     const number = req.session.userData.mobile;
-    console.log(number);
 
     function sendTextMessage() {
       client.verify.v2
@@ -345,7 +330,6 @@ const resendOtp = async (req, res, next) => {
     sendTextMessage();
     res.redirect("/otpVerify");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -363,7 +347,6 @@ const sendResetPass = async (name, email, token) => {
         pass: config.projPsw,
       },
     });
-    console.log(token);
     const mailOptions = {
       from: config.emailUser,
       to: email,
@@ -384,7 +367,6 @@ const sendResetPass = async (name, email, token) => {
       }
     });
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -393,7 +375,6 @@ const sendResetPass = async (name, email, token) => {
 const resetPass = async (req, res, next) => {
   try {
     const email = req.body.email;
-    console.log(email);
     const userData = await User.findOne({ email: email });
     if (userData) {
       if (userData.is_verified === 0) {
@@ -415,7 +396,6 @@ const resetPass = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -431,7 +411,6 @@ const newPass = async (req, res, next) => {
       res.render("404", { message: "Page not found" });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -439,7 +418,6 @@ const newPass = async (req, res, next) => {
 //setting a new Password for that user
 const resetAndSet = async (req, res, next) => {
   try {
-    console.log("hello");
     const password = req.body.password;
     const user_id = req.body.user_id;
 
@@ -448,10 +426,8 @@ const resetAndSet = async (req, res, next) => {
       { _id: user_id },
       { $set: { password: securePass, token: "" } }
     );
-    console.log(updatedData);
     res.redirect("/signin");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -460,17 +436,14 @@ const resetAndSet = async (req, res, next) => {
 const logout = async (req, res, next) => {
   try {
     req.session.destroy();
-    console.log(req.session, "dfjkaslfsd;k");
     res.redirect("/signin");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const userProfile = async (req, res, next) => {
   try {
-
     let cartData;
     let wishlist;
     const userData = await User.findById({ _id: req.session.userId });
@@ -490,7 +463,6 @@ const userProfile = async (req, res, next) => {
       res.render("userprofile", { userData, cartCount, wishCount });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -520,7 +492,6 @@ const addAddress = async (req, res, next) => {
       res.render("useraddress", { userData, cartCount, wishCount });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -552,7 +523,6 @@ const saveAddress = async (req, res, next) => {
 
     res.redirect("/profile");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -578,7 +548,6 @@ const updateAddress = async (req, res, next) => {
     );
     res.redirect("/profile");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -589,26 +558,19 @@ const deleteAddress = async (req, res, next) => {
       { _id: req.session.userId },
       { $pull: { address: { _id: req.query.id } } }
     );
-    if (!updatedata) {
-      console.log("No document matched the query.");
-    } else {
-      console.log(`Deleted document: ${updatedata}`);
-    }
 
     res.redirect("/profile");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
 
 const editProfile = async (req, res, next) => {
   try {
-
     let cartData;
     let wishlist;
     let userAddress;
-   const userData = await User.findById({ _id: req.session.userId });
+    const userData = await User.findById({ _id: req.session.userId });
     cartData = await Cart.findOne({ userId: userData._id });
     wishlist = await Wishlist.findOne({ userId: userData._id });
     if (req.query.id) {
@@ -650,7 +612,6 @@ const editProfile = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -668,7 +629,6 @@ const saveProfile = async (req, res, next) => {
     );
     res.redirect("/profile");
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };
@@ -690,7 +650,6 @@ const changePassword = async (req, res, next) => {
       res.json({ success: false });
     }
   } catch (error) {
-    console.log(error.message);
     next(error);
   }
 };

@@ -64,27 +64,27 @@ app.use(function (req, res, next) {
   }
 });
 
-// //500
-// app.use(function (err, req, res, next) {
-//   res.status(500);
+//500
+app.use(function (err, req, res, next) {
+  res.status(500);
 
-//   // respond with HTML page for 500 errors
-//   if (req.accepts("html")) {
-//     res.render("500", { error: err });
-//     return;
-//   }
-// });
+  // respond with HTML page for 500 errors
+  if (req.accepts("html")) {
+    res.render("500", { error: err });
+    return;
+  }
+});
 
-// //502
-// app.use(function (err, req, res, next) {
-//   res.status(502);
+//502
+app.use(function (err, req, res, next) {
+  res.status(502);
 
-//   // respond with HTML page for 502 errors
-//   if (req.accepts("html")) {
-//     res.render("502");
-//     return;
-//   }
-// });
+  // respond with HTML page for 502 errors
+  if (req.accepts("html")) {
+    res.render("502");
+    return;
+  }
+});
 
 //create server
 app.listen(3000, function () {

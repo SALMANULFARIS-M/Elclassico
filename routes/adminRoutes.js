@@ -23,8 +23,11 @@ admin_route.set("views", "./views/admin");
 
 //session midleware
 const auth = require("../middleware/adminauth");
-//admin controller
+// controllers
 const ac = require("../controllers/adminControllers");
+const pc = require("../controllers/productController");
+const oc = require("../controllers/orderController");
+
 //admin login and dashboard
 admin_route.get("/", auth.isLogout, ac.adminLogin);
 admin_route.post("/", ac.verifyAdmin);
@@ -48,8 +51,6 @@ admin_route.get("/addbanner", auth.isLogin, ac.addbanner);
 admin_route.post("/addbanner",auth.isLogin,upload.single("image"),ac.saveBanner);
 admin_route.post("/deletebanner", auth.isLogin, ac.deleteBanner);
 
-//product controller
-const pc = require("../controllers/productController");
 
 //category
 admin_route.get("/category", auth.isLogin, pc.category);
@@ -69,7 +70,6 @@ admin_route.post("/editproduct",auth.isLogin,  upload.fields([{ name: "image1" }
 admin_route.post("/deleteproduct", auth.isLogin, pc.deleteProduct);
 
 //orders
-const oc = require("../controllers/orderController");
 admin_route.get("/orders", auth.isLogin, oc.loadOrder);
 admin_route.get("/vieworder", auth.isLogin, oc.viewOrder);
 admin_route.post("/vieworder", auth.isLogin, oc.updateOrder);
