@@ -74,12 +74,12 @@
                                 <% } %>
                                     <% for(let j=1;j<=totalPages;j++){ %>
                                         <% if(j==currentPage) { %>
-                                            <a href="#" class="active" id="page">
+                                            <a class="active" id="page" onclick="filterProducts('<%=j%>')">
                                                 <%=j%>
                                             </a>
                                             <% } else if (j==currentPage+1 || j==currentPage-1 || j==1 || j==totalPages)
                                                 { %>
-                                                <a href="?page=<%=j%>">
+                                                <a onclick="filterProducts('<%=j%>')">
                                                     <%=j%>
                                                 </a>
                                                 <% } else if (j==currentPage+2 || j==currentPage-2) { %>
@@ -194,9 +194,9 @@
 
         <script>
 
-            function filterProducts() {
+            function filterProducts(currentPage) {
                 const search = document.getElementById("search_input").value
-                const page = document.getElementById("page").innerHTML
+                const page = Number(currentPage)
                 const sortItems = document.getElementById('sort-price');
                 const selectedSort = sortItems.value;
                 const categoryItems = document.querySelectorAll('input[name="category-list"]');
@@ -220,10 +220,8 @@
                         let filterArea = document.getElementById('sortArea')
                         let pagination = document.getElementById('pagination')
                         let htmlA = ""
-                        let htmlB =""
+                        let htmlB = ""
                         if (response.products) {
-                         const currentPage = response.currentPage;
-                         const totalPages = response.totalPages;
                             response.products.forEach((element) => {
                                 htmlA += `<div class="col-lg-4 col-md-6 my-5">
                                     <div class="single-product">
@@ -290,35 +288,55 @@
                                     </div>
                                 </div>`
                             })
-                            htmlB += ` <% if (currentPage > 1) { %>
-                                <a href="?page=<%= currentPage-1 %>" class="prev-arrow">
-                                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-                                </a>
-                                <% } %>
-                                    <% for(let j=1;j<=totalPages;j++){ %>
-                                        <% if(j==currentPage) { %>
-                                            <a href="#" class="active" id="page">
-                                                <%=j%>
-                                            </a>
-                                            <% } else if (j==currentPage+1 || j==currentPage-1 || j==1 || j==totalPages)
-                                                { %>
-                                                <a href="?page=<%=j%>">
-                                                    <%=j%>
-                                                </a>
-                                                <% } else if (j==currentPage+2 || j==currentPage-2) { %>
-                                                    <a href="#" class="dot-dot">
-                                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                                    </a>
-                                                    <% } %>
-                                                        <% } %>
-                                                            <% if (currentPage < totalPages) { %>
-                                                                <a href="?page=<%= parseInt(currentPage)+1 %>"
-                                                                    class="next-arrow">
-                                                                    <i class="fa fa-long-arrow-right"
-                                                                        aria-hidden="true"></i>
-                                                                </a>
-                                                                <% } %>`
-
+                            const currentPage = response.currentPage;
+                            const totalPages = response.totalPages;
+                            htmlB += `${currentPage > 1 ? // if currentPage is greater than 1
+                                    // add the previous page link
+                                    `
+    <a href="?page=${currentPage - 1}" class="prev-arrow">
+      <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+    </a>
+    ` : ''
+                                }
+  ${
+                                // loop through all the pages
+                                Array.from({ length: totalPages }, (_, j) => {
+                                    if (j + 1 === currentPage) { // if it's the current page
+                                        return `
+          <a onclick="filterProducts('${j + 1}')" class="active" id="page">
+            ${j + 1}
+          </a>
+        `;
+                                    } else if (totalPages === 2 && j === 1) { // if it's the second page and there are only two pages
+                                        return `
+          <a onclick="filterProducts('${j + 1}')">
+            ${j + 1}
+          </a>
+        `;
+                                    } else if (j === currentPage + 2 || j === currentPage - 2) { // if it's two pages away from the current page
+                                        return `
+          <a href="#" class="dot-dot">
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+          </a>
+        `;
+                                    } else { // for all other pages
+                                        return `
+          <a onclick="filterProducts('${j + 1}')">
+            ${j + 1}
+          </a>
+        `;
+                                    }
+                                }).join('') // join all the links together
+                                }
+  ${currentPage < totalPages ? // if currentPage is less than totalPages
+                                    // add the next page link
+                                    `
+    <a href="?page=${parseInt(currentPage) + 1}" class="next-arrow">
+      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+    </a>
+    ` : ''
+                                }
+`;
                             filterArea.innerHTML = htmlA
                             pagination.innerHTML = htmlB
 

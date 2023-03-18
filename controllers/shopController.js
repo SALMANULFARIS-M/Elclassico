@@ -528,85 +528,58 @@ const removeWishlist = async (req, res, next) => {
   }
 };
 
+
 const search = async (req, res) => {
   try {
-    let productData;
-    let page = 1;
+    let page = parseInt(req.body.page) || 1;
+    let searchQuery = req.body.search || '';
+    let categoryIds = req.body.category || null;
+    let sortOption = req.body.sort || '';
 
-    if (
-      req.body.sort == "Price" &&
-      req.body.search == "" &&
-      req.body.page == 1 &&
-      req.body.category == null
-    ) {
-      productData = await Product.find({ active: true })
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec();
-      res.json({ products: productData });
-    } else {
-      let sortOption = "";
-      let search = "";
-      let categoryIds = req.body.category || null;
+console.log(page);
 
-      if (req.body.page !== undefined) {
-        page = req.body.page;
-      }
-      if (req.body.sort !== undefined) {
-        sortOption = req.body.sort;
-      }
-      if (req.body.search !== undefined) {
-        search = req.body.search;
-      }
-      if (req.body.category !== undefined) {
-        categoryIds = req.body.category;
-      }
+    const query = {
+      $or: [
+        { name: { $regex: ".*" + searchQuery + ".*", $options: "i" } },
+        { brand: { $regex: ".*" + searchQuery + ".*", $options: "i" } },
+      ],
+    };
 
-      const query = {
-        $or: [
-          { name: { $regex: ".*" + search + ".*", $options: "i" } },
-          { brand: { $regex: ".*" + search + ".*", $options: "i" } },
-        ],
-      };
-      if (categoryIds && categoryIds.length > 0) {
-        query.category = { $in: categoryIds };
-      }
-
-      productData = await Product.find(query)
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec();
-
-      if (productData.length == 0) {
-        productData = await Product.find({ active: true })
-          .limit(limit * 1)
-          .skip((page - 1) * limit)
-          .exec();
-      }
-      switch (sortOption) {
-        case "Low to high":
-          productData.sort((a, b) => a.offer_price - b.offer_price);
-          break;
-        case "High to low":
-          productData.sort((a, b) => b.offer_price - a.offer_price);
-          break;
-        default:
-        // Sort by default (no sorting)
-      }
-      const count = await Product.find({
-        active: true,
-      }).countDocuments();
-
-      res.json({
-        products: productData,
-        totalPages: Math.ceil(count / limit),
-        currentPage: page,
-      });
+    if (categoryIds && categoryIds.length > 0) {
+      query.category = { $in: categoryIds };
     }
+
+    let sort = {};
+
+    switch (sortOption) {
+      case 'Low to high':
+        sort = { offer_price: 1 };
+        break;
+      case 'High to low':
+        sort = { offer_price: -1 };
+        break;
+    }
+
+    const products = await Product.find(query)
+      .sort(sort)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    const count = await Product.countDocuments(query);
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.json({
+      products: products,
+      currentPage: page,
+      totalPages: totalPages,
+    });
   } catch (error) {
-    console.log(error.message);
+    res.render('error', { message: 'An error occurred' });
   }
 };
+
 
 module.exports = {
   viewProduct,
