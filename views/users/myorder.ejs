@@ -6,7 +6,7 @@
 
             <div class="container" style="padding-top: 10em;">
 
-                <table class="table align-middle mb-0 bg-white table-responsive">
+                <table class="table mb-0 bg-white">
                     <thead class="bg-light">
                         <tr>
                             <th>ID</th>
@@ -99,6 +99,28 @@
                 </table>
             </div>
         </section>
+        <style>
+            /* Apply styles for screens with a maximum width of 767px */
+            @media (max-width: 767px) {
+                .table {
+                    display: block;
+                    width: 100%;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    -ms-overflow-style: -ms-autohiding-scrollbar;
+                }
+            }
+
+            /* Apply styles for screens with a minimum width of 768px */
+            @media (min-width: 768px) {
+                .table {
+                    width: 100%;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    -ms-overflow-style: -ms-autohiding-scrollbar;
+                }
+            }
+        </style>
 
         <script>
             const page = document.getElementById('my-account');
