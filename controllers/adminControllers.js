@@ -62,7 +62,7 @@ const dashboard = async (req, res, next) => {
       .populate("userId")
       .sort({ createdAt: -1 })
       .limit(6);
-    const orderCount = await Order.find({});
+    const orderCount = await Order.find({}).count();
     const userData = await User.find({});
     const productData = await Product.find({});
     const category = await Category.find({ active: true });
