@@ -382,7 +382,7 @@ const downloadExcel = async (req, res, next) => {
       .populate("products.productId");
 
     if (orderData.length === 0) {
-      res.status(404).send("No data found");
+      res.status(500).send("No data found");
     } else {
       orderData.forEach((order) => {
         const rowData = {
